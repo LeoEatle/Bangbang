@@ -1,0 +1,2 @@
+https://github.com/canfoo/vue2.0-taopiaopiao.git
+https://github.com/superman66/vue2.x-douban
