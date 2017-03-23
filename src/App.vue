@@ -5,11 +5,13 @@
 </template>
 
 <script>
-import home from './views/Home.vue'
+import home from './views/Home.vue';
+import createActivity from './views/CreateActivity.vue';
 export default {
   name: 'app',
   components: {
-    home
+    home,
+    createActivity
   }
 }
 </script>

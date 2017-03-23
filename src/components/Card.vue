@@ -16,15 +16,15 @@
                         <span>2 miles</span>
                     </div>
                     </md-card-header>
-
+                    
                    
                 </md-card-area>
                 
 
                 <md-card-expand>
                     <md-card-actions>
-                        <md-button>马上参加</md-button>
-                        <md-button>立即收藏</md-button>
+                        <md-button v-on:click="joinNow" class="md-raised md-accent">马上参加</md-button>
+                        <md-button class="md-raised md-default"><md-icon class="starIcon">thumb_up</md-icon> (13)</md-button>
                         <span style="flex: 1"></span>
                         <md-button class="md-icon-button" md-expand-trigger>
                             <md-icon>keyboard_arrow_down</md-icon>
@@ -57,7 +57,9 @@
             }
         },
         methods: {
-            
+            joinNow: function(){
+                console.log('joinNow clicked!')
+            }
         }
     }
 </script>

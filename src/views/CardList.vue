@@ -37,7 +37,7 @@
 
 <style lang="">
     .card-task {
-        margin: 0 auto;
+        margin: 10px auto;
         text-align: left;
         .md-subhead {
             text-align: left;
