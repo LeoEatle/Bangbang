@@ -46,7 +46,9 @@
             }
 
         },
-        compon
+        components: {
+            CardList
+        }
     }
 </script>
 
