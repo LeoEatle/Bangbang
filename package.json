@@ -12,6 +12,7 @@
     "keycode": "^2.1.8",
     "muse-ui": "^2.0.0-rc.5",
     "vue": "^2.2.2",
+    "vue-core-image-upload": "^2.0.10",
     "vue-material": "^0.7.1",
     "vue-router": "^2.2.0"
   },

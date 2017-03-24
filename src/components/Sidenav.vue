@@ -25,7 +25,7 @@
         </md-toolbar>
 
         <md-list>
-        <md-list-item @click.native="$refs.sidenav.toggle()" class="md-primary">
+        <md-list-item @click.native="createActivity" class="md-primary">
             <md-icon>add_circle</md-icon> <span>创建活动</span>
         </md-list-item>
 
@@ -51,7 +51,7 @@
         </md-list-item>
 
 
-        <md-list-item @click.native="$refs.sidenav.toggle()">
+        <md-list-item @click.native="personalCenter">
             <md-icon>person</md-icon> <span>个人信息</span>
         </md-list-item>
 
@@ -72,6 +72,18 @@
             toggleSidenav() {
                 console.log("成功调用到了子组件");
                 this.$refs.sidenav.toggle();
+            },
+            createActivity() {
+                this.$refs.sidenav.toggle();
+                this.$router.push({
+                    path: 'create-activity'
+                });
+            },
+            personalCenter() {
+                this.$refs.sidenav.toggle();
+                this.$router.push({
+                    path: 'personal-center'
+                });
             }
         }
     }
