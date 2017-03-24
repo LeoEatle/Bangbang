@@ -1,5 +1,5 @@
 <template>
-        <md-layout md-flex-xsmall="100" md-flex-small="50" md-flex-medium="33">
+        <md-layout md-flex-xsmall="100" md-flex-small="50" md-flex-medium="33" md-gutter>
             <md-card class="card-task">
                 <md-card-area md-inset>
                     <md-card-media md-ratio="16:9">
@@ -16,31 +16,33 @@
                         <span>2 miles</span>
                     </div>
                     </md-card-header>
-                    
-                   
                 </md-card-area>
                 
 
                 <md-card-expand>
                     <md-card-actions>
-                        <md-button v-on:click="joinNow" class="md-raised md-accent">马上参加</md-button>
-                        <md-button class="md-raised md-default"><md-icon class="starIcon">thumb_up</md-icon> (13)</md-button>
+                        <md-button id="starButton" class="md-raised md-default starButton"><md-icon>thumb_up</md-icon> (13)</md-button>
+                        <md-button id="shareButton" class="md-icon-button md-raised md-default shareButton"><md-icon>share</md-icon></md-button>
                         <span style="flex: 1"></span>
                         <md-button class="md-icon-button" md-expand-trigger>
                             <md-icon>keyboard_arrow_down</md-icon>
                         </md-button>
                     </md-card-actions>
                     <md-card-content>
-                        <p>这是详情内容</p>
-                        <h3 class="md-subheading">可选的时间</h3>
-                        <div class="card-reservation">
-                        <md-icon>access_time</md-icon>
-                        <md-button-toggle md-single class="md-button-group">
-                            <md-button>5:30PM</md-button>
-                            <md-button>7:30PM</md-button>
-                            <md-button>9:00PM</md-button>
-                        </md-button-toggle>
-                        </div>
+                        <md-card-area>
+                            <h3 class="md-subheading">可选的时间</h3>
+                            <div class="card-reservation">
+                            <md-icon>access_time</md-icon>
+                            <md-button-toggle md-single class="md-button-group">
+                                <md-button>5:30PM</md-button>
+                                <md-button>7:30PM</md-button>
+                                <md-button>9:00PM</md-button>
+                            </md-button-toggle>
+                            </div>
+                        </md-card-area>
+                        <md-card-actions>
+                            <md-button @click="joinNow" id="joinButton" class="md-raised md-accent">马上参加</md-button>
+                        </md-card-actions>
                     </md-card-content>
                 </md-card-expand>
             </md-card>
@@ -92,4 +94,14 @@
             }
         }
     }
+
+    #starButton {
+        margin: 6px 8px;
+    }
+
+    #joinButton {
+        margin: 10px auto -2px auto;
+    }
+
+
 </style>
