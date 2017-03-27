@@ -61,4 +61,10 @@
 
         
     }
+
+    @media only screen and (min-width: 768px) {
+        .md-card {
+            width: 80%;
+        }
+    }
 </style>
