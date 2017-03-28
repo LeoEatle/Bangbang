@@ -7,10 +7,11 @@ import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.css'
 import 'font-awesome/css/font-awesome.css'
 
+
 Vue.config.productionTip = false
 
 Vue.use(VueMaterial);
-
+Vue.use(require('./ext/vue_ext.js'));
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

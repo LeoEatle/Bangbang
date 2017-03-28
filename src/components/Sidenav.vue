@@ -14,7 +14,7 @@
             <md-list-item>
             <div id="sidenav-person-information" class="md-list-text-container">
                 <span>John Doe</span>
-                <span><md-icon v-bind:md-src=wechat></md-icon>liuyitao811</span>
+                <span><md-icon v-bind:md-src="wechat"></md-icon>liuyitao811</span>
             </div>
 
             <md-button class="md-icon-button md-list-action">
@@ -57,23 +57,38 @@
 
         </md-list>
     </md-sidenav>    
+    
+
 </template>
 
 <script>
     import wechatIcon from '../assets/wechat.svg';
     export default {
         name: 'Sidenav',
+        created(){
+            this.$AVInit();
+        },
         data: function(){
             return {
-                wechat: wechatIcon
+                wechat: wechatIcon,
+                confirm: {
+                    title: "Ops! 您还没有登录呢？",
+                    contentHtml: "请点击“去登录/注册”按钮进行登录/注册操作",
+                    ok: "去登录/注册",
+                    cancel: "再继续逛逛"
+                }
             }
         },
         methods: {
             toggleSidenav() {
-                console.log("成功调用到了子组件");
                 this.$refs.sidenav.toggle();
             },
             createActivity() {
+                console.log("AV Exists?", AV);
+                if (!AV.User.current()){
+                    //this.$refs.dialog5.open();
+                    this.$emit('askSign');
+                }
                 this.$refs.sidenav.toggle();
                 this.$router.push({
                     path: 'create-activity'

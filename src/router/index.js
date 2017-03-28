@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/views/Home'
 import createActivity from '@/views/CreateActivity'
 import personalCenter from '@/views/PersonalCenter'
+import Register from '@/views/Register'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/personal-center',
       name: 'personalCenter',
       component: personalCenter,
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
     }
   ]
 })

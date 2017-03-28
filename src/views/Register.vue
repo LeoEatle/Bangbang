@@ -50,13 +50,12 @@
                                 <md-list-item>
                                     <md-icon class="md-primary fa fa-venus-mars" ></md-icon>
                                     <div class="md-list-text-container">
-                                        <span>性别： {{gender}}</span>
+                                        <span>类型： {{type}}</span>
                                     </div>
                                     <md-list-expand>
-                                            <label>性别</label>
-                                            <md-radio v-model="gender" id="my-test1" name="my-test-group1" md-value="男">男</md-radio>
-                                            <md-radio v-model="gender" id="my-test2" name="my-test-group1" md-value="女">女</md-radio>
-                                            <md-radio v-model="gender" id="my-test3" name="my-test-group1" md-value="保密">保密</md-radio>
+                                            <label>类型</label>
+                                            <md-radio v-model="type" id="my-test1" name="my-test-group1" md-value="志愿者">志愿者</md-radio>
+                                            <md-radio v-model="type" id="my-test2" name="my-test-group1" md-value="需求者">需求者</md-radio>
                                     </md-list-expand>
                                 </md-list-item>
 
@@ -111,33 +110,18 @@
                                         </md-input-container>
                                     </md-list-expand>
                                 </md-list-item>
-                                
-                                <md-list-item>
-                                    <md-icon class="md-primary"><i class="fa fa-graduation-cap" aria-hidden="true"></i></md-icon>
-                                    <div class="md-list-text-container">
-                                        <span>学校： {{school}}</span>
-                                    </div>
-                                    <md-list-expand>
-                                        <md-input-container md-inline>
-                                            <label>选择学校</label>
-                                            <md-input v-model="school" type="text"></md-input>
-                                        </md-input-container>
-                                    </md-list-expand>
-                                </md-list-item>
-
-                                
 
                                 <md-list-item>
                                     <md-subheader class="subtips">点击下拉按钮进行设置</md-subheader>
                                 </md-list-item>
                             </md-list>
 
-                            <md-button id="saveButton" @click.native="userSetting" class="md-raised md-accent">
-                                保存设置
+                            <md-button id="saveButton" @click.native="registerEmit" class="md-raised md-accent">
+                                注册
                             </md-button>
 
                             <md-snackbar md-position="bottom center" ref="snackbar" md-duration=4000>
-                                <span>保存发生错误，请检查</span>
+                                <span>注册发生错误，请检查</span>
                                 <span>错误代码：</span> 
                             </md-snackbar>
                         </form>
@@ -153,25 +137,20 @@
     import myUpload from 'vue-image-crop-upload/upload-2.vue';
     import wechatIcon from '../assets/wechat_primary.svg';
     import login from './Login.vue';
-    import AV from 'leancloud-storage';
+    //import AV from 'leancloud-storage';
     //require("../assets/font-awesome.min.css")
     export default {
         name: 'personalCenter',
-        ready(){
-                this.$AVInit();
-                console.log("AVExsited", AV);
-        },
         data: function() {
             return (
                 {
                     nickName: "LeoEatle",
-                    gender: "男",
+                    type: "志愿者",
                     phoneNumber: 15627862382,
                     email: 'liuyitao811@hotmail.com',
                     password: '8415860l',
                     wechatID: "liuyito811",
                     wechatIcon: wechatIcon,
-                    school: "暨南大学",
                     show: false,
                     params: {
                         token: '123456798',
@@ -223,7 +202,7 @@
             /**
             * userSetting
             */
-            userSetting(){
+            registerEmit(){
                
                 // LeanCloud - 注册
                 // https://leancloud.cn/docs/leanstorage_guide-js.html#注册
@@ -231,13 +210,21 @@
                 user.setUsername(this.email);
                 user.setPassword(this.password);
                 user.setEmail(this.email);
+                user.setPhoneNumber(this.phoneNumber);
+                
                 user.signUp().then(function (loginedUser) {
                     // 注册成功，跳转到商品 list 页面
                     console.log("注册成功！");
                 }, (function (error) {
                     this.$refs.snackbar.open();
                     console.log(JSON.stringify(error));
-                }));
+                })).then(function(loginedUser){
+                    var currentUser = AV.User.current();
+                    currentUser.set("phoneNumber", this.phoneNumber);
+                    currentUser.set('wechatID', this.wechatID);
+                    currentUser.set('nickName', this.nickName);
+                    currentUser.set('type', this.type);
+                });
             }
         },
         components: {
