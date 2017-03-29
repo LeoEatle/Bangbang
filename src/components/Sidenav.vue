@@ -63,20 +63,15 @@
 
 <script>
     import wechatIcon from '../assets/wechat.svg';
+    import AVTools from '../ext/AVTools';
     export default {
         name: 'Sidenav',
         created(){
-            this.$AVInit();
+            
         },
         data: function(){
             return {
-                wechat: wechatIcon,
-                confirm: {
-                    title: "Ops! 您还没有登录呢？",
-                    contentHtml: "请点击“去登录/注册”按钮进行登录/注册操作",
-                    ok: "去登录/注册",
-                    cancel: "再继续逛逛"
-                }
+                wechat: wechatIcon
             }
         },
         methods: {
@@ -84,15 +79,20 @@
                 this.$refs.sidenav.toggle();
             },
             createActivity() {
-                console.log("AV Exists?", AV);
-                if (!AV.User.current()){
+                AVTools.AVInit();
+                console.log("AV AVCurrentUser", AVTools.AVCurrentUser());
+                if (AVTools.AVCurrentUser() === null){
                     //this.$refs.dialog5.open();
-                    this.$emit('askSign');
+                    console.log('用户尚未登录');
+                    this.$parent.$emit('ask-sign');
+                    //this,props.askSign();
                 }
-                this.$refs.sidenav.toggle();
-                this.$router.push({
-                    path: 'create-activity'
-                });
+                else{
+                    this.$refs.sidenav.toggle();
+                    this.$router.push({
+                        path: 'create-activity'
+                    });
+                }
             },
             personalCenter() {
                 this.$refs.sidenav.toggle();

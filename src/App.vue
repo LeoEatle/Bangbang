@@ -6,7 +6,7 @@
             </md-button>
             <router-link to="/"><h2 class="md-title" style="flex: 1">Bangbang</h2></router-link>
         </md-toolbar>
-        <Sidenav ref="leftSidenav" @open="open('left')" @close="close('left')"></Sidenav>
+        <Sidenav ref="leftSidenav" @open="open('left')" @close="close('left')  "></Sidenav>
         <md-dialog-confirm
           :md-title="confirm.title"
           :md-content-html="confirm.contentHtml"
@@ -25,17 +25,18 @@ import home from './views/Home.vue';
 import createActivity from './views/CreateActivity.vue';
 import Sidenav from './components/Sidenav.vue';
 import Register from './views/Register.vue';
-// import AV from 'leancloud-storage';
+import AVTools from './ext/AVTools';
 export default {
   name: 'app',
-  created(){
-        this.$AVInit();
-        console.log("AVExsited", AV);
-  },
+  
   methods: {
     beforeCreate() {
      
  
+    },
+    askSign() {
+      console.log("提示用户登录！");
+      this.$refs.dialog5.open();
     },
     toggleLeftSidenav() {
         this.$refs.leftSidenav.toggleSidenav();
@@ -53,20 +54,30 @@ export default {
       this.$refs[ref].close();
     },
     onOpen() {
-      console.log('go to sign in!');
-      this.$route.push({
-        path: 'register'
-      })
+      console.log('你给我去登录/注册！');
     },
     onClose(type) {
-      console.log('Closed', type);
+      if (type === 'ok'){
+        console.log("用户选择了妥协");
+        this.$router.push({
+          path: 'register'
+        });
+        this.toggleLeftSidenav();
+      }
+      else if (type === 'cancel'){
+        console.log("用户说还想再逛逛");
+        this.toggleLeftSidenav();
+      }
     }
   },
   created(){
-    this.$on('askSign', ()=>{
+    this.$on('ask-sign', function(){
       console.log('askSign listened!');
       this.$refs.dialog5.open();
     });
+
+    AVTools.AVInit();
+    
   },
   components: {
     home,

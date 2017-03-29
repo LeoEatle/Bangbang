@@ -1,13 +1,5 @@
 <template>
     <div id="personal-center">
-        
-
-        <md-tabs md-fixed>
-            <md-tab id="login" md-label="Login">
-                <login></login>
-            </md-tab>
-
-            <md-tab id="signin" md-label="signin">
                 <md-layout md-column md-gutter md-flex-xsmall="80" md-flex-medium="">
                     <md-layout v-model = "show">
                         <my-upload
@@ -143,9 +135,6 @@
                         </form>
                     </md-layout>
                 </md-layout>
-            </md-tab>
-        </md-tabs>
-
     </div>
 </template>
 
@@ -224,7 +213,6 @@
             * userSetting
             */
             userSetting(){
-               
                 // LeanCloud - 注册
                 // https://leancloud.cn/docs/leanstorage_guide-js.html#注册
                 var user = new AV.User();

@@ -34,6 +34,32 @@
                     <md-layout md-align="center" md-flex-xsmall="80" md-flex-medium="">
                         <form validate>
                             <md-list class="md-double-line">
+
+                                <md-list-item>
+                                    <md-icon class="md-primary">mail</md-icon>
+                                    <div class="md-list-text-container">
+                                        <span>邮箱： {{email}}</span>
+                                    </div>
+                                    <md-list-expand>
+                                        <md-input-container>
+                                            <label>在此编辑电子邮箱（注意！邮箱即唯一ID）</label>
+                                            <md-input required v-model="email" type="email"></md-input>
+                                        </md-input-container>
+                                    </md-list-expand>
+                                </md-list-item>
+
+                                <md-list-item>
+                                    <md-icon class="md-primary">vpn_key</md-icon>
+                                    <div class="md-list-text-container">
+                                        <span>密码： {{hiddenPassword}}</span>
+                                    </div>
+                                    <md-list-expand>
+                                        <md-input-container md-has-password>
+                                            <label>在此编辑密码</label>
+                                            <md-input required v-model="password" type="password"></md-input>
+                                        </md-input-container>
+                                    </md-list-expand>
+                                </md-list-item>
                                 <md-list-item>
                                     <md-icon class="md-primary">person</md-icon>
                                     <div class="md-list-text-container">
@@ -72,31 +98,6 @@
                                     </md-list-expand>
                                 </md-list-item>
 
-                                <md-list-item>
-                                    <md-icon class="md-primary">mail</md-icon>
-                                    <div class="md-list-text-container">
-                                        <span>邮箱： {{email}}</span>
-                                    </div>
-                                    <md-list-expand>
-                                        <md-input-container>
-                                            <label>在此编辑电子邮箱</label>
-                                            <md-input v-model="email" type="email"></md-input>
-                                        </md-input-container>
-                                    </md-list-expand>
-                                </md-list-item>
-
-                                <md-list-item>
-                                    <md-icon class="md-primary">vpn_key</md-icon>
-                                    <div class="md-list-text-container">
-                                        <span>密码： {{hiddenPassword}}</span>
-                                    </div>
-                                    <md-list-expand>
-                                        <md-input-container md-has-password>
-                                            <label>在此编辑密码</label>
-                                            <md-input v-model="password" type="password"></md-input>
-                                        </md-input-container>
-                                    </md-list-expand>
-                                </md-list-item>
 
                                 <md-list-item>
                                     <md-icon class="md-primary" :md-src=wechatIcon >微信</md-icon>
@@ -112,7 +113,7 @@
                                 </md-list-item>
 
                                 <md-list-item>
-                                    <md-subheader class="subtips">点击下拉按钮进行设置</md-subheader>
+                                    <span class="md-subheading subtips">点击下拉按钮进行设置</span>
                                 </md-list-item>
                             </md-list>
 
@@ -120,9 +121,12 @@
                                 注册
                             </md-button>
 
-                            <md-snackbar md-position="bottom center" ref="snackbar" md-duration=4000>
-                                <span>注册发生错误，请检查</span>
-                                <span>错误代码：</span> 
+                            <md-snackbar md-position="bottom center" ref="snackbarFailed" md-duration=4000>
+                                <span>注册发生错误，这不是您的问题，是服务器的问题</span>
+                            </md-snackbar>
+
+                            <md-snackbar md-position="bottom center" ref="snackbarSuccess" md-duration=4000>
+                                <span>注册成功！返回首页</span>
                             </md-snackbar>
                         </form>
                     </md-layout>
@@ -137,6 +141,7 @@
     import myUpload from 'vue-image-crop-upload/upload-2.vue';
     import wechatIcon from '../assets/wechat_primary.svg';
     import login from './Login.vue';
+    import AVTools from '../ext/AVTools';
     //import AV from 'leancloud-storage';
     //require("../assets/font-awesome.min.css")
     export default {
@@ -203,27 +208,46 @@
             * userSetting
             */
             registerEmit(){
-               
+                //this.$refs.snackbarSuccess.open();
+               console.log("开始为用户进行注册");
+                // AVTools.AVInit();
                 // LeanCloud - 注册
                 // https://leancloud.cn/docs/leanstorage_guide-js.html#注册
                 var user = new AV.User();
+                var snackbarSuccess = this.$refs.snackbarSuccess;
+                var snackbarFailed = this.$refs.snackbarFailed;
                 user.setUsername(this.email);
                 user.setPassword(this.password);
                 user.setEmail(this.email);
-                user.setPhoneNumber(this.phoneNumber);
+                user.set("mobilePhoneNumber", this.phoneNumber);
+                user.set('wechatID', this.wechatID);
+                user.set('nickName', this.nickName);
+                user.set('type', this.type);
+                console.log("user", user);
                 
-                user.signUp().then(function (loginedUser) {
+                user.signUp().then(function (currentUser) {
                     // 注册成功，跳转到商品 list 页面
-                    console.log("注册成功！");
-                }, (function (error) {
-                    this.$refs.snackbar.open();
-                    console.log(JSON.stringify(error));
-                })).then(function(loginedUser){
+                    console.log("注册成功！开始录入其他信息");
                     var currentUser = AV.User.current();
-                    currentUser.set("phoneNumber", this.phoneNumber);
-                    currentUser.set('wechatID', this.wechatID);
-                    currentUser.set('nickName', this.nickName);
-                    currentUser.set('type', this.type);
+                    //console.log(currentUser);
+
+                    // currentUser.set("mobilePhoneNumber", this.phoneNumber);
+                    // currentUser.set('wechatID', this.wechatID);
+                    // currentUser.set('nickName', this.nickName);
+                    // currentUser.set('type', this.type);
+                    return currentUser.save();
+                }, (function (error) {
+                    snackbarFailed.open();
+                    console.log(JSON.stringify(error));
+                })).then(function (){
+                    console.log("保存成功");
+                    snackbarSuccess.open();
+                    this.$router.push({
+                        path: '/'
+                    });
+                }, function(error){
+                    console.log("保存失败");
+                    snackbarFailed.open();
                 });
             }
         },

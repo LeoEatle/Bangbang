@@ -23,7 +23,7 @@
                                 </md-list-item>
                             </md-list>
 
-                            <md-subtitle id="otherType" flex="100">其他登录方式</md-subtitle>
+                            <span id="otherType" class="md-subheading" flex="100">其他登录方式</span>
                             <md-button-toggle id="otherType" class="md-primary" md-single>
                                 <md-button class="md-icon-button md-toggle">
                                     <md-icon :md-src='wechatIcon'></md-icon>
@@ -41,7 +41,7 @@
                                     豆瓣
                                 </md-button>
                             </md-button-toggle>
-                            <md-button id="saveButton" @click.native="userSetting" class="md-raised md-accent">
+                            <md-button id="saveButton" @click.native="login" class="md-raised md-accent">
                                 登录
                             </md-button>
                         </form>
@@ -56,6 +56,7 @@
 <script>
     import wechatIcon from '../assets/wechat_primary.svg';
     import AV from 'leancloud-storage';
+    import AVTools from '../ext/AVTools';
     //require("../assets/font-awesome.min.css")
     export default {
         name: 'personalCenter',
@@ -77,6 +78,7 @@
             login(){
                  // LeanCloud - 登录
                 // https://leancloud.cn/docs/leanstorage_guide-js.html#用户名和密码登录
+                AVTools.AVInit();
                 AV.User.logIn(this.username, this.password).then(function (loginedUser) {
                     // 登录成功，跳转到商品 list 页面
                     console.log(loginedUser);
