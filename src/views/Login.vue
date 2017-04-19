@@ -23,28 +23,37 @@
                                 </md-list-item>
                             </md-list>
 
-                            <span id="otherType" class="md-subheading" flex="100">其他登录方式</span>
-                            <md-button-toggle id="otherType" class="md-primary" md-single>
-                                <md-button class="md-icon-button md-toggle">
-                                    <md-icon :md-src='wechatIcon'></md-icon>
-                                </md-button>
+                        </form>
+                        
 
-                                <md-button class="md-icon-button md-toggle">
-                                    微博
-                                </md-button>
+                        <md-layout md-align="center" md-column>
+                            <span id="otherType" class="md-subheading" md-flex="100">其他登录方式</span>
 
-                                <md-button class="md-icon-button">
-                                    QQ
-                                </md-button>
 
-                                <md-button class="md-icon-button">
-                                    豆瓣
-                                </md-button>
-                            </md-button-toggle>
+                            <md-layout md-align="center">
+                                <md-layout>
+                                    <md-button class="md-primary">微信登录</md-button>                            
+                                </md-layout>
+
+                                <md-layout>
+                                    <md-button class="md-primary">微博登录</md-button>
+                                </md-layout>
+                                
+                                <md-layout>
+                                    <md-button class="md-primary">豆瓣登录</md-button>
+                                </md-layout>
+                            </md-layout>
                             <md-button id="saveButton" @click.native="login" class="md-raised md-accent">
                                 登录
                             </md-button>
-                        </form>
+                            <md-snackbar md-position="bottom center" ref="snackbarFailed" md-duration=4000>
+                                <span>登录失败！请检查邮箱和密码是否正确</span>
+                            </md-snackbar>
+
+                            <md-snackbar md-position="bottom center" ref="snackbarSuccess" md-duration=4000>
+                                <span>登录成功！跳转到首页</span>
+                            </md-snackbar>
+                        </md-layout>
                     </md-layout>
 
         </md-layout>
@@ -78,13 +87,22 @@
             login(){
                  // LeanCloud - 登录
                 // https://leancloud.cn/docs/leanstorage_guide-js.html#用户名和密码登录
+                var that = this;
                 AVTools.AVInit();
-                AV.User.logIn(this.username, this.password).then(function (loginedUser) {
+                AV.User.logIn(this.email, this.password).then(function (loginedUser) {
                     // 登录成功，跳转到商品 list 页面
                     console.log(loginedUser);
+                    that.$refs.snackbarSuccess.open();
+                    that.$router.push({
+                        path: '/'
+                    });
                 }, function (error) {
                     alert(JSON.stringify(error));
+                    that.$refs.snackbarFailed.open();
                 });
+            },
+            wechatLogin(){
+                //TODO: 这里要补上微信登录逻辑
             }
         }
     }
@@ -93,7 +111,7 @@
 <style>
     #otherType {
         display: block;
-        margin: 5px auto;
+        margin: 0px 5px 10px 5px;
     }
 
 </style>

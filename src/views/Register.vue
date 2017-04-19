@@ -149,12 +149,12 @@
         data: function() {
             return (
                 {
-                    nickName: "LeoEatle",
+                    nickName: "example",
                     type: "志愿者",
-                    phoneNumber: 15627862382,
-                    email: 'liuyitao811@hotmail.com',
-                    password: '8415860l',
-                    wechatID: "liuyito811",
+                    phoneNumber: 88888888,
+                    email: 'example@example.com',
+                    password: '',
+                    wechatID: "example",
                     wechatIcon: wechatIcon,
                     show: false,
                     params: {
@@ -225,28 +225,16 @@
                 user.set('type', this.type);
                 console.log("user", user);
                 
-                user.signUp().then(function (currentUser) {
-                    // 注册成功，跳转到商品 list 页面
-                    console.log("注册成功！开始录入其他信息");
-                    var currentUser = AV.User.current();
-                    //console.log(currentUser);
-
-                    // currentUser.set("mobilePhoneNumber", this.phoneNumber);
-                    // currentUser.set('wechatID', this.wechatID);
-                    // currentUser.set('nickName', this.nickName);
-                    // currentUser.set('type', this.type);
-                    return currentUser.save();
-                }, (function (error) {
-                    snackbarFailed.open();
-                    console.log(JSON.stringify(error));
-                })).then(function (){
-                    console.log("保存成功");
+                var that = this;// 为了将vue实例传入promise，进行router跳转
+                user.signUp().then(function (msg){
+                    console.log("保存成功，代码：", JSON.stringify(msg));
                     snackbarSuccess.open();
-                    this.$router.push({
+                    that.$router.push({
                         path: '/'
                     });
                 }, function(error){
-                    console.log("保存失败");
+                    console.log("保存失败，错误代码：", JSON.stringify(error));
+                    //console.log(JSON.stringify(error));
                     snackbarFailed.open();
                 });
             }

@@ -16,6 +16,7 @@
 
 <script>
     import CardList from './CardList.vue';
+    import AVTools from '../ext/AVTools';
     export default {
         name: 'Home',
         methods: {
@@ -28,17 +29,17 @@
             close(ref) {
                 console.log('Closed: '+ ref);
             },
-            //TODO: 需要验证用户的身份
-            checkValid() {
-                return true;
-            },
             enterCreate(e) {
-                console.log("enterButton clicked!");
-                console.log(e);
-                if(this.checkValid()) {
+                AVTools.AVInit();
+                console.log("AV AVCurrentUser", AVTools.AVCurrentUser());
+                if (AVTools.AVCurrentUser() === null){
+                    console.log('用户尚未登录');
+                    this.$parent.$emit('ask-sign');
+                }
+                else{
                     this.$router.push({
                         path: 'create-activity'
-                    })
+                    });
                 }
             }
         },

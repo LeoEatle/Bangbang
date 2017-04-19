@@ -9,6 +9,7 @@
 
             <span style="flex: 1"></span>
 
+            <div class="logOff">注销</div>
             </md-list-item>
 
             <md-list-item>
@@ -84,7 +85,7 @@
                 if (AVTools.AVCurrentUser() === null){
                     //this.$refs.dialog5.open();
                     console.log('用户尚未登录');
-                    this.$parent.$emit('ask-sign');
+                    this.$parent.$emit('ask-sign', 'close');
                     //this,props.askSign();
                 }
                 else{
@@ -106,43 +107,47 @@
 </script>
 
 <style lang="scss">
-  .md-title {
-    color: #fff;
-  }
-
-  .md-list {
-    overflow: auto;
-  }
-
-  .md-list-action .md-icon {
-    color: rgba(#fff, .26);
-  }
-
-  .md-avatar-icon .md-icon {
-    color: #fff !important;
-  }
-
-  .md-sidenav .md-list-text-container > :nth-child(2) {
-    color: rgba(#fff, .54) !important;
-  }
-
-  .md-account-header {
-    .md-list-item:hover .md-button:hover {
-      background-color: inherit;
+    .logOff {
+        margin-top: 20px;
     }
 
-    .md-avatar-list .md-list-item-container:hover {
-      background: none !important;
+    .md-title {
+        color: #fff;
     }
-  }
 
-  #sidenav-person-information {
-      color: #fff;
+    .md-list {
+        overflow: auto;
+    }
 
-      .md-icon {
-          margin-right: 6px;
-      }
-  }
+    .md-list-action .md-icon {
+        color: rgba(#fff, .26);
+    }
+
+    .md-avatar-icon .md-icon {
+        color: #fff !important;
+    }
+
+    .md-sidenav .md-list-text-container > :nth-child(2) {
+        color: rgba(#fff, .54) !important;
+    }
+
+    .md-account-header {
+        .md-list-item:hover .md-button:hover {
+        background-color: inherit;
+        }
+
+        .md-avatar-list .md-list-item-container:hover {
+        background: none !important;
+        }
+    }
+
+    #sidenav-person-information {
+        color: #fff;
+
+        .md-icon {
+            margin-right: 6px;
+        }
+    }
 
 
 </style>

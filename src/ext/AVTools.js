@@ -8,6 +8,7 @@ export default {
     AVInit(){
         AV.init({ appId:APP_ID, appKey:APP_KEY });
         console.log("AV Inited");
+        
     },
     // 返回目前登陆的用户
     AVCurrentUser() {

@@ -6,7 +6,7 @@
             </md-button>
             <router-link to="/"><h2 class="md-title" style="flex: 1">Bangbang</h2></router-link>
         </md-toolbar>
-        <Sidenav ref="leftSidenav" @open="open('left')" @close="close('left')  "></Sidenav>
+        <Sidenav :state="close" ref="leftSidenav" @open="open('left')" @close="close('left')"></Sidenav>
         <md-dialog-confirm
           :md-title="confirm.title"
           :md-content-html="confirm.contentHtml"
@@ -39,6 +39,7 @@ export default {
       this.$refs.dialog5.open();
     },
     toggleLeftSidenav() {
+        this.$data.state = !this.$data.state;
         this.$refs.leftSidenav.toggleSidenav();
     },
     open(ref) {
@@ -62,16 +63,16 @@ export default {
         this.$router.push({
           path: 'register'
         });
-        this.toggleLeftSidenav();
+        this.$refs.leftSidenav.$refs.sidenav.close();      
       }
       else if (type === 'cancel'){
         console.log("用户说还想再逛逛");
-        this.toggleLeftSidenav();
+        this.$refs.leftSidenav.$refs.sidenav.close();      
       }
     }
   },
   created(){
-    this.$on('ask-sign', function(){
+    this.$on('ask-sign', function(action){
       console.log('askSign listened!');
       this.$refs.dialog5.open();
     });
@@ -91,7 +92,8 @@ export default {
             contentHtml: "请点击“去登录/注册”按钮进行登录/注册操作",
             ok: "去登录/注册",
             cancel: "再继续逛逛"
-      }
+      },
+      state: false
     }
   }
 }
