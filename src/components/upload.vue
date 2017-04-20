@@ -780,7 +780,7 @@ input[type=range]:focus::-ms-fill-upper {
         <span :style="{width:percent+'%'}"></span>
         <em class="pa">{{percent}}%</em>
     </div>
-    <input type="file" class="upload" @change="fileChange" accept="{{accepts}}" multiple="{{multiple}}">
+    <input type="file" class="upload" @change="fileChange" :accept="accepts" multiple="multiple">
  
     <div class="crop" v-if="showCrop" transition="crop"  :style="{height:cropHeight+'px'}">
         <div class="loading" v-if="!showCropDialog">

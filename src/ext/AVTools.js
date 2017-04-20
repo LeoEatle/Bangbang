@@ -13,5 +13,9 @@ export default {
     // 返回目前登陆的用户
     AVCurrentUser() {
         return AV.User.current();
+    },
+    AVLogout() {
+        console.log("当前用户已注销！", AV.User.current());
+        AV.User.logOut();
     }
 }

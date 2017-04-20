@@ -1,12 +1,11 @@
 <template>
         <md-layout md-column md-align="center" md-flex-xsmall="80" md-flex-medium="60">
-          
-                    <md-layout md-column md-gutter>
-                        <md-avatar id="user-avatar" class="md-large">
-                            <img :src="imgDataUrl" >
-                        </md-avatar>
-                    </md-layout>
-                    <md-layout md-align="center" >
+                <md-layout md-column md-gutter>
+                    <md-avatar id="user-avatar" class="md-large">
+                        <img :src="imgDataUrl" >
+                    </md-avatar>
+                </md-layout>
+                <md-layout md-align="center" >
                         <form validate>
                             <md-list class="md-double-line">
                                 <md-list-item>
@@ -22,39 +21,43 @@
                                         </md-input-container>
                                 </md-list-item>
                             </md-list>
-
                         </form>
-                        
+                </md-layout>
 
-                        <md-layout md-align="center" md-column>
-                            <span id="otherType" class="md-subheading" md-flex="100">其他登录方式</span>
-
-
-                            <md-layout md-align="center">
-                                <md-layout>
-                                    <md-button class="md-primary">微信登录</md-button>                            
-                                </md-layout>
-
-                                <md-layout>
-                                    <md-button class="md-primary">微博登录</md-button>
-                                </md-layout>
-                                
-                                <md-layout>
-                                    <md-button class="md-primary">豆瓣登录</md-button>
-                                </md-layout>
-                            </md-layout>
-                            <md-button id="saveButton" @click.native="login" class="md-raised md-accent">
-                                登录
-                            </md-button>
-                            <md-snackbar md-position="bottom center" ref="snackbarFailed" md-duration=4000>
-                                <span>登录失败！请检查邮箱和密码是否正确</span>
-                            </md-snackbar>
-
-                            <md-snackbar md-position="bottom center" ref="snackbarSuccess" md-duration=4000>
-                                <span>登录成功！跳转到首页</span>
-                            </md-snackbar>
+                <md-layout md-align="center" md-column md-flex="60">
+                    <span id="otherType" class="md-subheading" md-flex="100">其他登录方式</span>
+                    <md-layout md-align="center" md-flex="60">
+                        <md-layout md-align="center" md-flex="25">
+                            <md-button class="md-primary">微信登录</md-button>                            
                         </md-layout>
+
+                        <md-layout md-align="center" md-flex="25">
+                            <md-button class="md-primary">微博登录</md-button>
+                        </md-layout>
+                        
+                        <md-layout md-align="center" md-flex="25">
+                            <md-button class="md-primary">豆瓣登录</md-button>
+                        </md-layout>
+
+                        <md-layout md-align="center" md-flex="25">
+                            <md-button class="md-primary">QQ登录</md-button>
+                        </md-layout>
+                        
                     </md-layout>
+                    <md-layout md-align="center" md-flex="50">
+                        <md-button  id="saveButton" @click.native="login" class="md-raised md-accent">
+                            登录
+                        </md-button>
+                    </md-layout>
+                    <md-snackbar md-position="bottom center" ref="snackbarFailed" md-duration=4000>
+                        <span>登录失败！请检查邮箱和密码是否正确</span>
+                    </md-snackbar>
+
+                    <md-snackbar md-position="bottom center" ref="snackbarSuccess" md-duration=4000>
+                        <span>登录成功！跳转到首页</span>
+                    </md-snackbar>
+                </md-layout>
+                
 
         </md-layout>
     </div>
@@ -90,8 +93,10 @@
                 var that = this;
                 AVTools.AVInit();
                 AV.User.logIn(this.email, this.password).then(function (loginedUser) {
-                    // 登录成功，跳转到商品 list 页面
-                    console.log(loginedUser);
+                    // 登录成功，跳转到首页
+                    var query = new AV.Query('_User');
+                    console.log('用户登录成功！query: ', query);
+                    console.log('用户名：',loginedUser.getUsername());
                     that.$refs.snackbarSuccess.open();
                     that.$router.push({
                         path: '/'

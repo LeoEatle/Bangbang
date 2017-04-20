@@ -4,18 +4,18 @@
         <md-list class="md-transparent">
             <md-list-item class="md-avatar-list">
             <md-avatar class="md-large">
-                <img src="https://placeimg.com/64/64/people/8" alt="People">
+                <img :src="avatarUrl" alt="People">
             </md-avatar>
 
             <span style="flex: 1"></span>
-
-            <div class="logOff">注销</div>
+            <div class="test" @click="test">测试</div>
+            <div class="logOut" @click="logOut">注销</div>
             </md-list-item>
 
             <md-list-item>
             <div id="sidenav-person-information" class="md-list-text-container">
-                <span>John Doe</span>
-                <span><md-icon v-bind:md-src="wechat"></md-icon>liuyitao811</span>
+                <span>{{userName}}</span>
+                <span><md-icon v-bind:md-src="wechat"></md-icon>{{wechatID}}</span>
             </div>
 
             <md-button class="md-icon-button md-list-action">
@@ -65,6 +65,15 @@
 <script>
     import wechatIcon from '../assets/wechat.svg';
     import AVTools from '../ext/AVTools';
+    import AV from 'leancloud-storage';
+    // 获取当前用户实例
+    AVTools.AVInit();
+
+    var currentUser = AV.User.current();
+    if(currentUser){
+        var wechatID = currentUser.get('wechatID');
+        var userName = currentUser.getUsername();
+    }
     export default {
         name: 'Sidenav',
         created(){
@@ -72,7 +81,11 @@
         },
         data: function(){
             return {
-                wechat: wechatIcon
+                wechat: wechatIcon,
+                wechatID: wechatID||'游客',
+                userName:  userName||'游客',
+                // TODO: 这里是头像的图像url
+                avatarUrl: currentUser.get("avatar").get("url")||'https://placeimg.com/64/64/people/8'
             }
         },
         methods: {
@@ -80,8 +93,6 @@
                 this.$refs.sidenav.toggle();
             },
             createActivity() {
-                AVTools.AVInit();
-                console.log("AV AVCurrentUser", AVTools.AVCurrentUser());
                 if (AVTools.AVCurrentUser() === null){
                     //this.$refs.dialog5.open();
                     console.log('用户尚未登录');
@@ -100,6 +111,21 @@
                 this.$router.push({
                     path: 'personal-center'
                 });
+            },
+            logOut() {
+                // 注销并回到首页
+                AVTools.AVLogout();
+                this.toggleSidenav();     
+                this.$router.push({
+                    path: '/'
+                });
+            },
+            test() {
+                console.log("email", currentUser.getEmail());
+                console.log("mobile phone number", currentUser.getMobilePhoneNumber());
+                console.log("user name", currentUser.getUsername());
+                console.log("type", currentUser.get("type"));
+                console.log("avatar", currentUser.get("avatar").get("url"))
             }
         }
     }
@@ -107,7 +133,7 @@
 </script>
 
 <style lang="scss">
-    .logOff {
+    .logOut {
         margin-top: 20px;
     }
 

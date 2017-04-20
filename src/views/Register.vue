@@ -9,28 +9,23 @@
 
             <md-tab id="signin" md-label="signin">
                 <md-layout md-column md-gutter md-flex-xsmall="80" md-flex-medium="">
-                    <md-layout v-model = "show">
-                        <my-upload
-                            field = "img"
-                            @crop-success = "cropSuccess"
-                            @crop-upload-success = "cropUploadSuccess"
-                            @crop-upload-fail = "cropUploadFail"
-                            v-model = "show"
-                            :width = "300"
-                            :height = "300"
-                            url="/upload"
-                            :params = "params"
-                            :headers = "headers"
-                            img-format = "png">
-                        
-                        </my-upload>
-                    </md-layout>
                     <md-layout md-column md-gutter >
-                        <md-avatar id="user-avatar" class="md-large">
-                            <img :src="imgDataUrl" @click.native = "toggleShow">
+                        <md-avatar  @click.native = "toggleShow" id="user-avatar" class="md-large">
+                            <img :src="imgDataUrl">
                         </md-avatar>
                         <p>点击头像进行设置</p>
-                    </md-layout>
+                        <my-upload field="img"
+                        @crop-success="cropSuccess"
+                        @crop-upload-success="cropUploadSuccess"
+                        @crop-upload-fail="cropUploadFail"
+                        v-model="show"
+                        :width="300"
+                        :height="300"
+                        url="/upload"
+                        :params="params"
+                        :headers="headers"
+                        img-format="png"></my-upload>
+                        </md-layout>
                     <md-layout md-align="center" md-flex-xsmall="80" md-flex-medium="">
                         <form validate>
                             <md-list class="md-double-line">
@@ -141,9 +136,11 @@
     import myUpload from 'vue-image-crop-upload/upload-2.vue';
     import wechatIcon from '../assets/wechat_primary.svg';
     import login from './Login.vue';
+    import AV from 'leancloud-storage';
     import AVTools from '../ext/AVTools';
-    //import AV from 'leancloud-storage';
-    //require("../assets/font-awesome.min.css")
+    import avatarUpload from '../components/upload.vue';
+    
+    AVTools.AVInit();
     export default {
         name: 'personalCenter',
         data: function() {
@@ -156,20 +153,24 @@
                     password: '',
                     wechatID: "example",
                     wechatIcon: wechatIcon,
+
+                    // 关于配置头像上传参数
                     show: false,
                     params: {
                         token: '123456798',
-                        name: 'avatar'
+                        name: this.nickName + '_avator'
                     },
                     headers: {
                         smail: '*_~'
                     },
-                    imgDataUrl: 'https://placeimg.com/64/64/people/8' // the datebase64 url of created image
+                    imgDataUrl: 'https://placeimg.com/64/64/people/8', // the datebase64 url of created image,
+                    avatar: null
                 }
             )
         },
         methods: {
             toggleShow() {
+                console.log("toggle show");
                 this.show = !this.show;
             },
               /**
@@ -191,6 +192,7 @@
 			cropUploadSuccess(jsonData, field){
 				console.log('-------- upload success --------');
 				console.log(jsonData);
+                this.avatar = jsonData;
 				console.log('field: ' + field);
 			},
 			/**
@@ -210,7 +212,6 @@
             registerEmit(){
                 //this.$refs.snackbarSuccess.open();
                console.log("开始为用户进行注册");
-                // AVTools.AVInit();
                 // LeanCloud - 注册
                 // https://leancloud.cn/docs/leanstorage_guide-js.html#注册
                 var user = new AV.User();
@@ -223,6 +224,7 @@
                 user.set('wechatID', this.wechatID);
                 user.set('nickName', this.nickName);
                 user.set('type', this.type);
+                user.set('avatar', this.avatar)
                 console.log("user", user);
                 
                 var that = this;// 为了将vue实例传入promise，进行router跳转
@@ -241,7 +243,8 @@
         },
         components: {
             'my-upload': myUpload,
-            'login': login
+            'login': login,
+            avatarUpload
         },
         computed: {
             hiddenPassword: function(){ 
