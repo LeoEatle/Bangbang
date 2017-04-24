@@ -75,8 +75,8 @@
                                     </div>
                                     <md-list-expand>
                                             <label>类型</label>
-                                            <md-radio v-model="type" id="my-test1" name="my-test-group1" md-value="志愿者">志愿者</md-radio>
-                                            <md-radio v-model="type" id="my-test2" name="my-test-group1" md-value="需求者">需求者</md-radio>
+                                            <md-radio v-model="type" id="my-test1" name="my-test-group1" md-value="志愿者">服务提供者</md-radio>
+                                            <md-radio v-model="type" id="my-test2" name="my-test-group1" md-value="需求者">服务需求者</md-radio>
                                     </md-list-expand>
                                 </md-list-item>
 

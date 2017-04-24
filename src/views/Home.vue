@@ -1,22 +1,23 @@
 <template>
-    <div>
+    <md-layout md-column md-flex="100">
         <md-tabs md-fixed>
             <md-tab id="find" md-label="Find">
                 <CardList></CardList>
             </md-tab>
             <md-tab id="map" md-label="Map">
-                <p>地图</p>
+                <MapView></MapView>
             </md-tab>
         </md-tabs>  
         <md-button @click.native="enterCreate()" class="md-fab home-add-button md-fab-bottom-right" id="home-add-button">
             <md-icon >add</md-icon>
         </md-button>
-    </div>
+    </md-layout>
 </template>
 
 <script>
     import CardList from './CardList.vue';
     import AVTools from '../ext/AVTools';
+    import MapView from './MapView.vue';
     export default {
         name: 'Home',
         methods: {
@@ -44,15 +45,29 @@
             }
         },
         components: {
-            CardList
+            CardList,
+            MapView
 
         }
     }
 </script>
 
 <style>
+
+    html {
+        height: 100%;
+    }
+
+    body {
+        height: 100%;
+    }
+
     #home-add-button {
         position: fixed !important;
+    }
+
+    #map {
+        padding: 0px;
     }
     
 </style>
