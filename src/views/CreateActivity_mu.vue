@@ -50,7 +50,7 @@
                                 <md-icon class="dateIcon">
                                 access_time
                                 </md-icon>
-                                <mu-date-picker v-model="todoDate" class="dateInput" hintText="请选择具体日期"/><br/>
+                                <mu-date-picker v-model="date" class="dateInput" hintText="请选择具体日期"/><br/>
                         </md-layout>
 
                         
@@ -71,17 +71,6 @@
                         根据流程添加目的地和预定时间
                     </mu-step-label>
                     <mu-step-content>
-                        <md-layout class="todoList-layout" md-column>
-                            <ul>
-                                <mu-sub-header>已添加的步骤</mu-sub-header>
-                                <mu-list-item v-for="(todo,index) in todoList" :title="todo.todoName" :key="index">
-                                    <mu-flat-button @click="deleteTodoItem(index)" slot="right" label="删除" class="demo-flat-button" secondary/>
-                                    <mu-divider inset/>
-                                </mu-list-item>
-                            </ul>
-                        </md-layout>
-
-
                         <md-layout md-column id="add-todo-block" v-show="todoShow">
                             <md-layout>
                                 <md-input-container>
@@ -117,13 +106,24 @@
 
                             <md-button id="confirmTodoButton" class="md-raised confirmTodoButton" @click.native="newTodoItem()">确定</md-button>
                         </md-layout>
+
+                        <md-layout class="todoList-layout" md-column>
+                            <ul>
+                                <mu-sub-header>已添加的步骤</mu-sub-header>
+                                <mu-list-item v-for="(todo,index) in todoList" :title="todo.todoName" :key="index">
+                                    <mu-flat-button @click="deleteTodoItem(index)" slot="right" label="删除" class="demo-flat-button" secondary/>
+                                    <mu-divider inset/>
+                                </mu-list-item>
+                            </ul>
+                        </md-layout>
                     </mu-step-content>
                 </mu-step>
             </mu-stepper>
             <div class="demo-step-content">
                 <p v-if="finished">
-                        <md-button id="newActivityButton" class="md-raised confirmTodoButton" @click.native="newTodoItem()">完成需求设置</md-button>
-                        都完成啦!<a href="javascript:;" @click="reset">点这里</a>可以重置
+                        <md-button id="newActivityButton" class="md-raised confirmTodoButton" @click.native="newActivity()">完成任务设置</md-button>
+                        恭喜完成任务!<a href="javascript:;" @click="reset">点这里</a>可以重置
+                        
                 </p>
                 <template v-if="!finished">
                 <p>
@@ -135,7 +135,8 @@
                 </div>
                 </template>
             </div>
-
+            <mu-snackbar v-if="snackbar" :message="snackbarText" action="关闭" @actionClick="hideSnackbar" @close="hideSnackbar"/>
+            
             
             <md-snackbar md-position="bottom center" ref="snackbarSuccess" md-duration=3000>
                 <span>保存成功！返回首页</span>
@@ -165,19 +166,24 @@
             return {
                 // stepper
                 activeStep: 0,
-
+                snackbar: false,
+                snackbarText: "保存成功！返回首页",
                 tipText: "还未上传图片",
 
                 // 基本信息
                 title: "",
                 description: "",
                 personNum: "",
+                date: "",
+                geolocation: [],
 
                 // 标题图片相关信息
                 picValue: "",
                 picName: "",
+                titlePicture: "",
                 avFileID: "",
                 avFileUrl: "",
+
                 // 进度条
                 progressShow: false,
                 progress: 0,
@@ -282,6 +288,21 @@
                 this.activeStep = 0
             },
 
+            showSnackbar () {
+                this.snackbar = true
+                if (this.snackTimer) clearTimeout(this.snackTimer)
+                this.snackTimer = setTimeout(() => { 
+                    this.snackbar = false;
+                    this.$router.push({
+                        path: '/'
+                    })
+                 }, 2000)
+            },
+            hideSnackbar () {
+                this.snackbar = false
+                if (this.snackTimer) clearTimeout(this.snackTimer)
+            },
+
 
             // 地图组件相关方法
             onSearchResult(pois) {
@@ -326,8 +347,10 @@
                     that.progressShow = false;
                     console.log("图片上传成功, msg:");
                     console.log(msg);
+                    that.titlePicture = avFile;
                     that.avFileID = msg.id;
                     that.avFileUrl = msg.attributes.url;
+                    
                     // 这里存储id
                 }, function(error){
                     that.progressShow = false;
@@ -348,9 +371,11 @@
                 activity.set("personNum", this.personNum);
                 activity.set("createUser", AV.User.current());
                 activity.set("joinUser", []);
+                activity.set("titlePicture", this.titlePicture);
                 activity.set("pictureID", this.avFileID);
                 activity.set("pictureUrl", this.avFileUrl);
                 activity.set("todoList", this.todoList);
+                activity.set("geolocation", new AV.GeoPoint(this.todoList[0].todoGeolocation.lat, this.todoList[0].todoGeolocation.lng));
 
                 // 处理图片
                 
@@ -358,10 +383,7 @@
                 var that = this;
                 activity.save().then(function(msg){
                     console.log("activity saved! msg: ", msg);
-                    that.$refs.snackbarSuccess.open();
-                    that.$router.push({
-                        path: "/"
-                    })
+                    that.showSnackbar();
                 }, function(error){
                     console.error("activity save failed! code: ", error);
                     that.$refs.snackbarFailed.open();
@@ -418,6 +440,9 @@
         margin-top: 50px;
     }
 
+    #newActivityButton{
+        width: 90%;
+    }
 
     .block_header {
         width: 100%;
