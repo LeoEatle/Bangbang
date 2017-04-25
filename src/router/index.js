@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/views/Home'
-import createActivity from '@/views/CreateActivity'
+import createActivity from '@/views/CreateActivity_mu'
 import personalCenter from '@/views/PersonalCenter'
 import Register from '@/views/Register'
 
