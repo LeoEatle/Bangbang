@@ -1,7 +1,10 @@
 <template>
-    <md-layout md-gutter>
-            <Card v-for="(item, index) in items" v-bind:item="item" v-bind:key="index"></Card>
-    </md-layout>
+    <div>
+        <md-layout md-gutter>
+                <Card v-for="(item, index) in items" v-bind:item="item" v-bind:key="index"></Card>
+                
+        </md-layout>
+    </div>
 </template>
 
 

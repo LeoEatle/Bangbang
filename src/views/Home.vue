@@ -62,6 +62,11 @@
         height: 100%;
     }
 
+    canvas {
+        max-width: none !important;
+
+    }
+
     #home-add-button {
         position: fixed !important;
     }

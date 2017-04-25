@@ -4,6 +4,8 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 import VueMaterial from 'vue-material';
+import MuseUI from 'muse-ui';
+import 'muse-ui/dist/muse-ui.css';
 // 百度地图
 import BaiduMap from 'vue-baidu-map';
 import AMap from 'vue-amap';
@@ -15,6 +17,9 @@ import 'font-awesome/css/font-awesome.css'
 Vue.config.productionTip = false
 // 使用Vue Material
 Vue.use(VueMaterial);
+
+// 使用Muse UI
+Vue.use(MuseUI);
 
 // 使用百度地图
 Vue.use(BaiduMap, {

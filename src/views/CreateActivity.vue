@@ -6,9 +6,9 @@
             </md-layout>
             
 
-            <md-layout md-column md-gutter md-flex="80"> 
+            <md-layout class="formWrapper" md-column md-gutter md-flex="80"> 
                 <md-layout>
-                    <div class="block_header">{{tipText}}</div>
+                    <div class="block_header">1.{{tipText}}</div>
                 </md-layout>
 
                 <md-progress :md-progress="progress" v-show="progressShow" md-flex="60"></md-progress>
@@ -18,10 +18,10 @@
                 </md-layout>
 
                 <md-layout>
-                    <div class="block_header">请填写基本信息</div>
+                    <div class="block_header">2.请填写基本信息</div>
                 </md-layout>
 
-                <form validate @submit.stop.prevent="submit">
+                <form id="form" validate @submit.stop.prevent="submit">
                     <md-layout>
                         <md-input-container>
                             <md-icon>
@@ -42,15 +42,6 @@
                         </md-input-container>
                     </md-layout>
                     
-                    <md-layout>
-                        <md-input-container>
-                            <md-icon>
-                            room
-                            </md-icon>
-                            <label>地点</label>
-                            <md-input v-model="place" placeholder="请说明要进行任务的地方" maxlength="40" required></md-input>
-                        </md-input-container>
-                    </md-layout>
                     
 
                     <md-layout>
@@ -64,34 +55,69 @@
                     </md-layout>
 
                     <md-layout>
-                        <div class="block_header">根据流程添加目标地和预定时间</div>
-                    </md-layout>
-                    
-                    <md-layout md-row>
-                        <md-icon class="dateIcon">
-                        access_time
-                        </md-icon>
-                        <datePicker v-model="time" md-flex="95" class="dateInput" hintText="请选择具体日期"></datePicker>
+                        <div class="block_header">3.根据流程添加目标地和预定时间</div>
                     </md-layout>
 
-                   <md-layout md-column>
-                        <md-input-container>
-                            <md-icon>room</md-icon>
-                            <label>详细位置</label>
-                            <md-input v-model="todoPlace" ></md-input>
-                        </md-input-container>
-                        <div class="amap_page_container">
-                            <el-amap-search-box class="search-box" :search-option="searchOption" :on-search-result="onSearchResult" :events="events"></el-amap-search-box>
-                            <el-amap :vid="amap" :plugin="plugin" :center="mapCenter" :zoom="12">
-                                <el-amap-marker v-for="marker in markers" :key="marker.position.toString()" :position="marker"></el-amap-marker>
-                            </el-amap>
-                        </div>
+
+                    
+
+                    <md-layout class="todoList-layout" md-column>
+                        <ul>
+                            <mu-sub-header>已添加的步骤</mu-sub-header>
+                            <oi v-for="todo in todoList" :title="todo.todoName" :key="todo.todoName">
+                                <span>{{todo.todoName}}</span>
+                                <mu-flat-button slot="right" label="删除" class="demo-flat-button" secondary/>
+                                <mu-divider inset/>
+                            </oi>
+                        </ul>
+                    </md-layout>
+
+
+
+                    <md-button id="newTodoButton" class="md-raised newTodoButton" @click.native="showTodoBlock()">添加一个步骤</md-button>
+
+
+                    <md-layout md-column id="add-todo-block" v-show="todoShow">
+                        <md-layout>
+                            <md-input-container>
+                                <md-icon>
+                                grade
+                                </md-icon>
+                                <label>步骤名称</label>
+                                <md-input v-model="todoName" placeholder="步骤的名字（不多于20字）" maxlength="20" ></md-input>
+                            </md-input-container>
+                        </md-layout>
+
+                        <md-layout md-row>
+                            <md-icon class="dateIcon">
+                            access_time
+                            </md-icon>
+                            <datePicker v-model="todoDate" md-flex="95" class="dateInput" hintText="请选择具体日期"></datePicker>
+                        </md-layout>
+
+                        <md-layout md-column>
+                            <md-input-container>
+                                <md-icon>room</md-icon>
+                                <label>详细位置</label>
+                                <md-input v-model="todoAddress" ></md-input>
+                            </md-input-container>
+                            <div class="amap-page-container">
+                                <el-amap-search-box class="search-box"  :search-option="searchOption" :on-search-result="onSearchResult" :events="events"></el-amap-search-box>
+                                <el-amap class="el-vue-amap" :plugin="plugin" :zoom="12" :center="mapCenter" >
+                                    <el-amap-marker v-for="marker in markers" :key="marker.toString()" :position="marker"></el-amap-marker>
+                                </el-amap>
+                            </div>
+                        </md-layout>
+
+                        <md-button id="confirmTodoButton" class="md-raised confirmTodoButton" @click.native="newTodoItem()">确定</md-button>
+
                     </md-layout>
                 </form>
 
                 <div>
-                    <md-button class="md-raised md-accent newActivityButton" @click.native="newActivity()">创建活动</md-button>
+                    <md-button id="newActivityButton" class="md-raised md-accent newActivityButton" @click.native="newActivity()">创建活动</md-button>
                 </div>
+                
             </md-layout>
             <md-snackbar md-position="bottom center" ref="snackbarSuccess" md-duration=3000>
                 <span>保存成功！返回首页</span>
@@ -125,8 +151,6 @@
                 // 基本信息
                 title: "",
                 description: "",
-                place: "",
-                time: "",
                 personNum: "",
 
                 // 标题图片相关信息
@@ -135,6 +159,19 @@
                 // 进度条
                 progressShow: false,
                 progress: 0,
+
+                // 缓存的todo项目
+                todoShow: false,
+                todoName: '',
+                todoDate: '',
+                todoAddress: '',
+                todoGeolocation: {
+                    lat: 23.132486,
+                    lng: 113.347936
+                },
+
+                // 已添加的todoList
+                todoList: [],
 
                 // 地图组件相关信息
                 amap:'amap-vue-2',
@@ -146,38 +183,57 @@
                     city: '广州',
                     citylimit: true
                 },
-                // 初始化定位点
-                mapCenter: [],
                 events: {
                     init(o){
                         console.log(o);
                     }
                 },
-                todoPlace: '',
                 plugin: [{
                     pName: 'Geolocation',
+                    panToLocation: true,
+                    zoomToAccuracy: true,
                     events: {
-                    init(instance) {
-                        instance.getCurrentPosition((status, result) => {
-                        self.mapCenter = [result.position.lng, result.position.lat];
-                        });
+                        init(instance) {
+                            instance.getCurrentPosition((status, result) => {
+                                console.log("获取当前位置的result: ", result);
+                                if (result.info === "SUCCESS"){
+                                    self.mapCenter = [result.position.lng, result.position.lat];
+                                    self.todoAddress = result.todoAddress;
+                                    self.todoGeolocation.lng = result.position.lng;
+                                    self.todoGeolocation.lat = result.position.lat;
+                                }
+                                else {
+                                    alert("获取位置失败，请点击左下角刷新");
+                                }
+                            });
+                        }
                     }
+                },
+                {
+                    pName: 'ToolBar',
+                    position: 'LT',
+                    events: {
+                        init(instance) {
+                            console.log(instance);
+                        }
                     }
-                }]
+                }
+                ],
+                // 初始化定位点
+                mapCenter: [23.132486, 113.347936],
 
             }
         },
         methods:{
             // 地图组件相关方法
-            addMarker(){
-                let lng = 121.5 + Math.round(Math.random() * 1000) / 10000;
-                let lat = 31.197646 + Math.round(Math.random() * 500) / 10000;
-                this.markers.push([lng, lat]);
-            },
             onSearchResult(pois) {
                 let latSum = 0;
                 let lngSum = 0;
                 if (pois.length > 0) {
+                    console.log(pois);
+                    this.todoAddress = pois[0].name;
+                    this.todoGeolocation.lng = pois[0].lng;
+                    this.todoGeolocation.lat = pois[0].lat;
                     pois.forEach(poi => {
                         let {lng, lat} = poi;
                         lngSum += lng;
@@ -242,26 +298,64 @@
                     console.error("activity save failed! code: ", error);
                     that.$refs.snackbarFailed.open();
                 });
+            },
+
+            // 创建新的Todo项目
+            newTodoItem() {
+                this.todoList.push({
+                    todoName: this.todoName,
+                    todoAddress: this.todoAddress,
+                    todoDate: this.todoDate,
+                    todoGeolocation: this.todoGeolocation
+                })
+            },
+            showTodoBlock() {
+                this.todoShow = !this.todoShow;
             }
         }
     }
 </script>
 
-<style>
-    .newActivityButton{
+<style lang="less">
+    canvas{
+        max-width: none !important;
+    }
+
+    .formWrapper{
+        text-align: center;
+    }
+
+    #form{
+        width: auto;
+        text-align: center;
+    }
+
+    .hidden{
+        display: hidden !important;
+    }
+
+
+    .todoList-layout{
+        text-align: left;
+        ul{
+            padding-left: 0px;
+        }
+    }
+
+    .newActivityButton, #confirmTodoButton{
         margin-top: 50px;
     }
 
+
     .block_header {
         width: 100%;
-        text-align: center;
+        text-align: left;
+        margin-bottom: 10px;
 
-        border-bottom: 2px dotted #3f51b5;
-
-        font-size: 16px;
+        font-size: 14px;
         line-height: 32px;
         font-family: inherit;
-        color: rgba(0,0,0,0.54);
+        color: #e91e63;
     }
 
     .uploadBlock{
@@ -285,16 +379,29 @@
 
     // 地图组件相关css
      .amap-page-container {
+        position: relative;
+        display: block;
         margin: auto;
+        width: 100%;
+        height: 400px !important;
     }
 
     .amap-page-container .el-vue-amap {
+        position: relative;
+        width: 100%;
         height: 400px;
+        top: -20px;
     }
 
-    .search-box {
-        position: relative;
-        top: 65px;
-        left: 20px;
+    .search-box{
+        position: absolute;
+        width: auto !important;
+        top: 50px;
+        z-index: 10000 !important;
+    }
+
+    .search-box-wrapper {
+        top: 0px;
+        left: 0px;
     }
 </style>
