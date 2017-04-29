@@ -26,6 +26,10 @@
         </md-toolbar>
 
         <md-list>
+        <md-list-item @click.native="backHome" class="md-primary">
+            <md-icon>home</md-icon><span>首页</span>
+        </md-list-item>
+
         <md-list-item @click.native="createActivity" class="md-primary">
             <md-icon>add_circle</md-icon> <span>创建活动</span>
         </md-list-item>
@@ -73,6 +77,7 @@
     if(currentUser){
         var wechatID = currentUser.get('wechatID');
         var userName = currentUser.getUsername();
+        var avatarUrl = currentUser.get("avatar").get("url");
     }
     export default {
         name: 'Sidenav',
@@ -85,12 +90,18 @@
                 wechatID: wechatID||'游客',
                 userName:  userName||'游客',
                 // TODO: 这里是头像的图像url
-                avatarUrl: currentUser.get("avatar").get("url")||'https://placeimg.com/64/64/people/8'
+                avatarUrl: avatarUrl||'https://placeimg.com/64/64/people/8'
             }
         },
         methods: {
             toggleSidenav() {
                 this.$refs.sidenav.toggle();
+            },
+            backHome(){
+                this.$refs.sidenav.toggle();
+                this.$router.push({
+                    path: '/'
+                })
             },
             createActivity() {
                 if (AVTools.AVCurrentUser() === null){
@@ -102,19 +113,22 @@
                 else{
                     this.$refs.sidenav.toggle();
                     this.$router.push({
-                        path: 'create-activity'
+                        path: '/create-activity'
                     });
                 }
             },
             personalCenter() {
                 this.$refs.sidenav.toggle();
                 this.$router.push({
-                    path: 'personal-center'
+                    path: '/personal-center'
                 });
             },
             logOut() {
                 // 注销并回到首页
                 AVTools.AVLogout();
+                this.wechatID = "测试";
+                this.userName = "测试";
+                this.avatarUrl = 'https://placeimg.com/64/64/people/8';
                 this.toggleSidenav();     
                 this.$router.push({
                     path: '/'

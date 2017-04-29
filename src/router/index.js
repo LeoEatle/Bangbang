@@ -4,6 +4,7 @@ import Home from '@/views/Home'
 import createActivity from '@/views/CreateActivity_mu'
 import personalCenter from '@/views/PersonalCenter'
 import Register from '@/views/Register'
+import activityDetail from '@/views/ActivityDetail';
 
 Vue.use(Router)
 
@@ -13,6 +14,12 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/activity_detail/:id',
+      name: "activity_detail",
+      component: activityDetail,
+      props: true
     },
     {
       path: '/create-activity',

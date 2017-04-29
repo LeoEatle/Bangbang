@@ -248,7 +248,7 @@
                 }
                 ],
                 // 初始化定位点
-                mapCenter: [23.132486, 113.347936],
+                mapCenter: [113.34793, 23.13248],
 
             }
         },
@@ -376,6 +376,7 @@
                 activity.set("pictureUrl", this.avFileUrl);
                 activity.set("todoList", this.todoList);
                 activity.set("geolocation", new AV.GeoPoint(this.todoList[0].todoGeolocation.lat, this.todoList[0].todoGeolocation.lng));
+                activity.set("likes", 0);
 
                 // 处理图片
                 

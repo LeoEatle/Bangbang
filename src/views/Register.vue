@@ -133,12 +133,11 @@
 </template>
 
 <script>
-    import myUpload from 'vue-image-crop-upload/upload-2.vue';
+    import myUpload from '../components/upload2.vue';
     import wechatIcon from '../assets/wechat_primary.svg';
     import login from './Login.vue';
     import AV from 'leancloud-storage';
     import AVTools from '../ext/AVTools';
-    import avatarUpload from '../components/upload.vue';
     
     AVTools.AVInit();
     export default {
@@ -179,9 +178,9 @@
 			 * [param] imgDataUrl
 			 * [param] field
 			 */
-			cropSuccess(imgDataUrl, field){
+			cropSuccess(createImgUrl, field){
 				console.log('-------- crop success --------');
-				this.imgDataUrl = imgDataUrl;
+                
 			},
 			/**
 			 * upload success
@@ -193,7 +192,7 @@
 				console.log('-------- upload success --------');
 				console.log(jsonData);
                 this.avatar = jsonData;
-				console.log('field: ' + field);
+                this.imgDataUrl = jsonData.get("url");
 			},
 			/**
 			 * upload fail
@@ -244,7 +243,6 @@
         components: {
             'my-upload': myUpload,
             'login': login,
-            avatarUpload
         },
         computed: {
             hiddenPassword: function(){ 
