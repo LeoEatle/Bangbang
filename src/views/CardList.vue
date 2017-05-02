@@ -18,6 +18,8 @@
     var image = require('../assets/card-sky.jpg');
 
     var activity = new AV.Query('Activity');
+    activity.descending('createdAt');
+
     var activityList = [];
     activity.find().then((result)=>{
         console.log("获取result: ", result);
@@ -44,6 +46,10 @@
 
     export default {
         name: 'CardList',
+        // 路由钩子
+        beforeRouteUpdate (to, from, next){
+            this.fetchData();
+        },
         data () {
             return {
                 // 这里是应该渲染的卡片列表
@@ -60,7 +66,35 @@
             }
         },
         methods: {
+            fetchData(){
+                var activity = new AV.Query('Activity');
+                activity.descending('createdAt');
 
+                var activityList = [];
+                activity.find().then((result)=>{
+                    console.log("获取result: ", result);
+                    if (result.length > 0){
+                        result.forEach((activityItem)=>{
+                            activityList.push({
+                                id: activityItem.id,
+                                title: activityItem.get("title"),
+                                description: activityItem.get("description"),
+                                todoList: activityItem.get("todoList"),
+                                personNum: activityItem.get("personNum"),
+                                date: activityItem.get("date"),
+                                createUser: activityItem.get("createUser"),
+                                imgUrl: activityItem.get("pictureUrl"),
+                                geolocation: activityItem.get("geolocation"),
+                                likes: activityItem.get("likes")
+
+                            })
+                        })
+                        console.log("activityList", activityList);
+
+                    }
+                })
+                this.activityList = activityList;
+            }
         },
         components: {
             Card

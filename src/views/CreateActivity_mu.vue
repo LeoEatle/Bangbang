@@ -161,6 +161,8 @@
             VueImgInputer,
             datePicker
         },
+
+        
         data: function(){
             let self = this;
             return {
@@ -370,7 +372,7 @@
                 activity.set("date", this.date);
                 activity.set("personNum", this.personNum);
                 activity.set("createUser", AV.User.current());
-                activity.set("joinUser", []);
+                activity.set("joinUsers", []);
                 activity.set("titlePicture", this.titlePicture);
                 activity.set("pictureID", this.avFileID);
                 activity.set("pictureUrl", this.avFileUrl);

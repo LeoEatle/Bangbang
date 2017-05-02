@@ -193,7 +193,7 @@
 				console.log(jsonData);
                 this.avatar = jsonData;
                 this.imgDataUrl = jsonData.get("url");
-			},
+k 			},
 			/**
 			 * upload fail
 			 *
@@ -224,15 +224,24 @@
                 user.set('nickName', this.nickName);
                 user.set('type', this.type);
                 user.set('avatar', this.avatar)
+
+                user.set('createActivities', []);
+                user.set('joinActivities', []);
+                user.set('starActivities', []);
+
+
                 console.log("user", user);
                 
                 var that = this;// 为了将vue实例传入promise，进行router跳转
                 user.signUp().then(function (msg){
                     console.log("保存成功，代码：", JSON.stringify(msg));
                     snackbarSuccess.open();
-                    that.$router.push({
+                    setTimeout(()=>{
+                        that.$router.push({
                         path: '/'
-                    });
+                     });
+                    }, 1000)
+                    
                 }, function(error){
                     console.log("保存失败，错误代码：", JSON.stringify(error));
                     //console.log(JSON.stringify(error));

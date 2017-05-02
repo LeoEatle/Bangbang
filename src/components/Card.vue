@@ -8,7 +8,7 @@
 
                     <md-card-header>
                     <h2 class="md-title">{{item.title}}</h2>
-                    <div class="md-subhead">
+                    <div class="md-subhead description">
                         {{item.description}}
                     </div>
                     <div class="md-subhead">
@@ -92,6 +92,11 @@
 </script>
 
 <style lang="scss">
+    .description{
+        min-width: 300px;
+        max-width: 300px;
+    }
+
     .md-card-header {
         .md-title {
             color: rgba(0, 0, 0, .87);

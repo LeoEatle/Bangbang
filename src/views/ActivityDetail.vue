@@ -38,8 +38,8 @@
             </mu-flexbox-item>
 
             <mu-flexbox-item class="button_list">
-                <md-button class="md-raised md-accent joinButton">点击参加</md-button>
-                <md-button class="md-raised starButton">加入收藏</md-button>
+                <md-button class="md-raised md-accent joinButton" @click.native="joinClick">点击参加</md-button>
+                <md-button class="md-raised starButton" @click.native="starClick">加入收藏</md-button>
             </mu-flexbox-item>
             
             <mu-flexbox-item>
@@ -98,11 +98,13 @@
                 this.todoTime=  this.todoList[0].todoDate;
                 this.todoAddress = this.todoList[0].todoAddress;
                 this.todoGeolocation = this.todoList[0].todoGeolocation;
-                this.todoStatus = activity.get("todoStatus");
+                if (activity.get("todoStatus") !== undefined){
+                    this.todoStatus = activity.get("todoStatus");
+                }
 
                 this.joinUsers = activity.get("joinUsers");
                 this.personNum = activity.get("personNum");
-                this.mapCenter = [this.todoGeolocation.lng, this,todoGeolocation.lat];
+                this.mapCenter = [this.todoGeolocation.lng, this.todoGeolocation.lat];
 
             }, (error)=>{
                 console.log("获取任务信息出错，error: ", error);
@@ -117,6 +119,8 @@
                 title: "Loading",
                 description: "",
                 pictureUrl: "",
+                activityDate: "",
+
                 joinUsers: [],
                 personNum: 0,
                 todoList: [],
@@ -147,13 +151,26 @@
         },
         methods: {
             todoStatusChange(value){
-                console.log('value', value);
+                console.log("todoStatus改变，目前状态:", value);
+                
                 this.activity.set("todoStatus", value);
                 this.activity.save().then((msg)=>{
                     console.log("todoStatus保存成功: ", msg);
                 }, (error)=>{
                     console.log("todoStatus保存失败: ", error);
                 });
+            },
+            joinClick(){
+                console.log("参加活动按钮click");
+                let user = AV.User.current();
+                console.log(user);
+                let joinActivities = user.get("joinActivities");
+                console.log(joinActivities);
+                //joinActivities.push(this.activity);
+                //user.set("joinActivities", joinActivities);
+            },
+            starClick(){
+                console.log("收藏活动按钮click");
             }
         }
     }

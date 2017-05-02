@@ -73,24 +73,26 @@
     // 获取当前用户实例
     AVTools.AVInit();
 
-    var currentUser = AV.User.current();
-    if(currentUser){
-        var wechatID = currentUser.get('wechatID');
-        var userName = currentUser.getUsername();
-        var avatarUrl = currentUser.get("avatar").get("url");
-    }
+    
     export default {
         name: 'Sidenav',
         created(){
-            
+            var currentUser = AV.User.current();
+            if(currentUser){
+                this.wechatID = currentUser.get('wechatID');
+                this.userName = currentUser.getUsername();
+                this.avatarUrl = currentUser.get("avatar").get("url");
+            }        
         },
+       
+
         data: function(){
             return {
                 wechat: wechatIcon,
-                wechatID: wechatID||'游客',
-                userName:  userName||'游客',
+                wechatID: '游客',
+                userName:  '游客',
                 // TODO: 这里是头像的图像url
-                avatarUrl: avatarUrl||'https://placeimg.com/64/64/people/8'
+                avatarUrl: 'https://placeimg.com/64/64/people/8'
             }
         },
         methods: {
@@ -126,14 +128,15 @@
             logOut() {
                 // 注销并回到首页
                 AVTools.AVLogout();
-                this.wechatID = "测试";
-                this.userName = "测试";
+                this.wechatID = "游客";
+                this.userName = "游客";
                 this.avatarUrl = 'https://placeimg.com/64/64/people/8';
                 this.toggleSidenav();     
                 this.$router.push({
                     path: '/'
                 });
             },
+            
             test() {
                 console.log("email", currentUser.getEmail());
                 console.log("mobile phone number", currentUser.getMobilePhoneNumber());
