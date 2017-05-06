@@ -31,7 +31,7 @@
                 <p>{{todoTime}}</p>
                 <h3>地址预览</h3>
                 <div class="amap-page-container">
-                    <el-amap class="el-vue-amap" :plugin="plugin" :center="mapCenter" :zoom="16">
+                    <el-amap :events="events" class="el-vue-amap" :plugin="plugin" :center="mapCenter" :zoom="16">
                         <el-amap-marker :position="mapCenter"></el-amap-marker>
                     </el-amap>
                 </div>
@@ -113,6 +113,13 @@
         data() {
                         
             return {
+                // 高德地图英文化
+                events: {
+                    init(o) {
+                        console.log("map.o", o);
+                        o.setLang('en');
+                    }
+                },
                 loading: true,
 
                 activity: null,

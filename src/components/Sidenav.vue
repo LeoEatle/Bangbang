@@ -35,10 +35,6 @@
         </md-list-item>
 
         <md-list-item @click.native="$refs.sidenav.toggle()">
-            <md-icon>contacts</md-icon> <span>近期联系人</span>
-        </md-list-item>
-
-        <md-list-item @click.native="$refs.sidenav.toggle()">
             <md-icon>access_time</md-icon> <span>参加的活动</span>
         </md-list-item>
 

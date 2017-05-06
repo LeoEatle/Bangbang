@@ -2,12 +2,12 @@
     <div>
         <md-layout md-gutter md-align="center">
             <md-layout md-flex="80" md-gutter> 
-                <h1>创建任务</h1>
+                <h1>Create new task</h1>
             </md-layout>
             <mu-stepper id="formWrapper" :activeStep="activeStep" orientation="vertical">
                 <mu-step>
                     <mu-step-label>
-                        上传描述图片
+                        Upload the picture for description
                     </mu-step-label>
                     <mu-step-content>
                         <md-layout>
@@ -17,13 +17,13 @@
                         <md-progress :md-progress="progress" v-show="progressShow" md-flex="60"></md-progress>
 
                         <md-layout  class="uploadBlock">
-                            <VueImgInputer v-model="picValue" theme="light" placeholder="点击选择图片" bottomText="点击图片进行修改" @onChange="setImg"></VueImgInputer>
+                            <VueImgInputer v-model="picValue" theme="light" placeholder="Click to choose the picture" bottomText="Click to change the picture" @onChange="setImg"></VueImgInputer>
                         </md-layout>
                     </mu-step-content>
                 </mu-step>
                 <mu-step>
                     <mu-step-label>
-                        填写基本信息
+                        Fill in the basic information
                     </mu-step-label>
                     <mu-step-content>
                         <md-layout>
@@ -31,8 +31,8 @@
                                 <md-icon>
                                 grade
                                 </md-icon>
-                                <label>标题</label>
-                                <md-input v-model="title" placeholder="起个标题吧（不多于20字）" maxlength="20" required></md-input>
+                                <label>Title</label>
+                                <md-input v-model="title" placeholder="Give it a name!（Less than 50）" maxlength="50" required></md-input>
                             </md-input-container>
                         </md-layout>
 
@@ -41,8 +41,8 @@
                                 <md-icon>
                                 view_headline
                                 </md-icon>
-                                <label>介绍</label>
-                                <md-input v-model="description" placeholder="请用一句话介绍（不多于40个字）" maxlength="40" required></md-input>
+                                <label>Introduction</label>
+                                <md-input v-model="description" placeholder="Please introduce the task with one sentence（less than 100）" maxlength="100" required></md-input>
                             </md-input-container>
                         </md-layout>
                         
@@ -50,7 +50,7 @@
                                 <md-icon class="dateIcon">
                                 access_time
                                 </md-icon>
-                                <mu-date-picker v-model="date" class="dateInput" hintText="请选择具体日期"/><br/>
+                                <mu-date-picker v-model="date" :dateTimeFormat="enDateFormat" class="dateInput" okLabel="Ok" cancelLabel="Cancel" hintText="Please select the concret date"/><br/>
                         </md-layout>
 
                         
@@ -60,7 +60,7 @@
                                 <md-icon>
                                 accessibility
                                 </md-icon>
-                                <label>人数</label>
+                                <label>Person Number</label>
                                 <md-input v-model="personNum" type="number"></md-input>
                             </md-input-container>
                         </md-layout>
@@ -68,7 +68,7 @@
                 </mu-step>
                 <mu-step>
                     <mu-step-label>
-                        根据流程添加目的地和预定时间
+                        Add procedure based on the destination and scheduled time
                     </mu-step-label>
                     <mu-step-content>
                         <md-layout md-column id="add-todo-block" v-show="todoShow">
@@ -77,8 +77,8 @@
                                     <md-icon>
                                     grade
                                     </md-icon>
-                                    <label>步骤名称</label>
-                                    <md-input v-model="todoName" placeholder="步骤的名字（不多于20字）" maxlength="20" ></md-input>
+                                    <label>Step name</label>
+                                    <md-input v-model="todoName" placeholder="The name of this step（less than 20 letters）" maxlength="20" ></md-input>
                                 </md-input-container>
                             </md-layout>
 
@@ -86,32 +86,32 @@
                                 <md-icon class="dateIcon">
                                 access_time
                                 </md-icon>
-                                <mu-time-picker v-model="todoDate" class="dateInput" hintText="请选择事件(12小时制)"/><br/>
+                                <mu-time-picker v-model="todoDate" class="dateInput" hintText="Select the scheduled time (12 hours system)"/><br/>
 
                             </md-layout>
 
                             <md-layout md-column>
                                 <md-input-container>
                                     <md-icon>room</md-icon>
-                                    <label>详细位置</label>
+                                    <label>Destination</label>
                                     <md-input v-model="todoAddress" ></md-input>
                                 </md-input-container>
                                 <div class="amap-page-container">
                                     <el-amap-search-box class="search-box"  :search-option="searchOption" :on-search-result="onSearchResult" :events="events"></el-amap-search-box>
-                                    <el-amap class="el-vue-amap" :plugin="plugin" :zoom="12" :center="mapCenter" >
+                                    <el-amap class="el-vue-amap" :plugin="plugin" :zoom="12" :center="mapCenter" :events="events">
                                         <el-amap-marker v-for="marker in markers" :key="marker.toString()" :position="marker"></el-amap-marker>
                                     </el-amap>
                                 </div>
                             </md-layout>
 
-                            <md-button id="confirmTodoButton" class="md-raised confirmTodoButton" @click.native="newTodoItem()">确定</md-button>
+                            <md-button id="confirmTodoButton" class="md-raised confirmTodoButton" @click.native="newTodoItem()">Confirm</md-button>
                         </md-layout>
 
                         <md-layout class="todoList-layout" md-column>
                             <ul>
-                                <mu-sub-header>已添加的步骤</mu-sub-header>
+                                <mu-sub-header>Added steps</mu-sub-header>
                                 <mu-list-item v-for="(todo,index) in todoList" :title="todo.todoName" :key="index">
-                                    <mu-flat-button @click="deleteTodoItem(index)" slot="right" label="删除" class="demo-flat-button" secondary/>
+                                    <mu-flat-button @click="deleteTodoItem(index)" slot="right" label="Delete" class="demo-flat-button" secondary/>
                                     <mu-divider inset/>
                                 </mu-list-item>
                             </ul>
@@ -121,17 +121,16 @@
             </mu-stepper>
             <div class="demo-step-content">
                 <p v-if="finished">
-                        <md-button id="newActivityButton" class="md-raised confirmTodoButton" @click.native="newActivity()">完成任务设置</md-button>
-                        恭喜完成任务!<a href="javascript:;" @click="reset">点这里</a>可以重置
-                        
+                        <md-button id="newActivityButton" class="md-raised confirmTodoButton" @click.native="newActivity()">Finish the configuration</md-button>
+                        Congratulations!<a href="javascript:;" @click="reset">Click here</a> to reset
                 </p>
                 <template v-if="!finished">
                 <p>
                     {{content}}
                 </p>
                 <div>
-                    <mu-flat-button class="demo-step-button" label="上一步" :disabled="activeStep === 0" @click="handlePrev"/>
-                    <mu-raised-button class="demo-step-button" :label="activeStep === 2 ? '完成' : '下一步'" primary @click="handleNext"/>
+                    <mu-flat-button class="demo-step-button" label="Last step" :disabled="activeStep === 0" @click="handlePrev"/>
+                    <mu-raised-button class="demo-step-button" :label="activeStep === 2 ? 'Finish' : 'Next step'" primary @click="handleNext"/>
                 </div>
                 </template>
             </div>
@@ -139,10 +138,10 @@
             
             
             <md-snackbar md-position="bottom center" ref="snackbarSuccess" md-duration=3000>
-                <span>保存成功！返回首页</span>
+                <span>Success! Return to home page</span>
             </md-snackbar>
             <md-snackbar md-position="bottom center" ref="snackbarFailed" md-duration=3000>
-                <span>保存发生错误，这不是您的问题，是服务器的问题</span>
+                <span>Error when saving. This is not your fault. It is a server error.</span>
             </md-snackbar>
         </md-layout>
     </div>
@@ -155,6 +154,35 @@
     import datePicker from 'muse-components/datePicker';
     AVTools.AVInit();
 
+    // 英文版的Date picker
+    const dayAbbreviation = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+    const dayList = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+    const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
+    'Oct', 'Nov', 'Dec']
+    const monthLongList = ['January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December']
+
+    const enDateFormat = {
+    formatDisplay (date) {
+        return `${dayList[date.getDay()]}, ${monthList[date.getMonth()]} ${date.getDate()}`
+    },
+    formatMonth (date) {
+        return `${monthLongList[date.getMonth()]} ${date.getFullYear()}`
+    },
+    getWeekDayArray (firstDayOfWeek) {
+        let beforeArray = []
+        let afterArray = []
+        for (let i = 0; i < dayAbbreviation.length; i++) {
+        if (i < firstDayOfWeek) {
+            afterArray.push(dayAbbreviation[i])
+        } else {
+            beforeArray.push(dayAbbreviation[i])
+        }
+        }
+        return beforeArray.concat(afterArray)
+    }
+    }
+
     export default {
         name: 'CreateActivity',
         components: {
@@ -166,11 +194,22 @@
         data: function(){
             let self = this;
             return {
+                // 高德地图英文化
+                events: {
+                    init(o) {
+                        console.log("map.o", o);
+                        o.setLang('en');
+                    }
+                },
+
+                // datepicker 英文化
+                enDateFormat,
+
                 // stepper
                 activeStep: 0,
                 snackbar: false,
-                snackbarText: "保存成功！返回首页",
-                tipText: "还未上传图片",
+                snackbarText: "Success! Return to home page",
+                tipText: "There are no pictures yet",
 
                 // 基本信息
                 title: "",
@@ -213,11 +252,6 @@
                     city: '广州',
                     citylimit: true
                 },
-                events: {
-                    init(o){
-                        console.log(o);
-                    }
-                },
                 plugin: [{
                     pName: 'Geolocation',
                     panToLocation: true,
@@ -233,7 +267,7 @@
                                     self.todoGeolocation.lat = result.position.lat;
                                 }
                                 else {
-                                    alert("获取位置失败，请点击左下角刷新");
+                                    alert("Fail to get the position，Please click the left corner to refresh");
                                 }
                             });
                         }
@@ -260,13 +294,13 @@
             let message = ''
             switch (this.activeStep) {
                 case 0:
-                message = '上传活动图片'
+                message = 'Upload the picture of task'
                 break
                 case 1:
-                message = '填写基本信息'
+                message = 'Fill in the basic information'
                 break
                 case 2:
-                message = '添加步骤'
+                message = 'Add new step'
                 break
                 default:
                 message = 'fuck! 又 TM 出错了！！！'
@@ -338,11 +372,11 @@
                 avFile.save({onprogress: function(e){
                     that.progressShow = true;
                     if(e.percent < 100){
-                        console.log("图片已上传"+ e.percent + "%");
+                        console.log("The picture is uploaded: "+ e.percent + "%");
                         that.progress = e.percent;
-                        that.tipText = "正在上传图片, 进度："+ e.percent + "%";
+                        that.tipText = "Uploading...Progress："+ e.percent.toFixed(2) + "%";
                     }else{
-                        that.tipText = "上传完成！";
+                        that.tipText = "Uploading complete！";
                     }
 
                 }}).then(function(msg){
@@ -361,7 +395,7 @@
             },
             // 创建活动，和leancloud的互动
             newActivity() {
-                console.log("开始创建新活动！");
+                console.log("Start to new activity");
                 // 构建一个新的AV.Object
                 var ActivityCreator = AV.Object.extend('Activity');
                 // 创建一个新的activity

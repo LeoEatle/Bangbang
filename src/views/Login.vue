@@ -10,13 +10,13 @@
                             <md-list class="md-double-line">
                                 <md-list-item>
                                         <md-input-container>
-                                            <label>在此编辑邮箱</label>
+                                            <label>{{ $t("login.email_label") }}</label>
                                             <md-input v-model="email" type="mail"></md-input>
                                         </md-input-container>
                                 </md-list-item>
                                 <md-list-item>
                                         <md-input-container md-has-password>
-                                            <label>在此编辑密码</label>
+                                            <label>{{ $t("login.password_label") }}</label>
                                             <md-input v-model="password" type="password"></md-input>
                                         </md-input-container>
                                 </md-list-item>
@@ -25,36 +25,36 @@
                 </md-layout>
 
                 <md-layout md-align="center" md-column md-flex="60">
-                    <span id="otherType" class="md-subheading" md-flex="100">其他登录方式</span>
-                    <md-layout md-align="center" md-flex="60">
-                        <md-layout md-align="center" md-flex="25">
-                            <md-button class="md-primary">微信登录</md-button>                            
+                    <span id="otherType" class="md-subheading" md-flex="100">{{ $t("login.other_type") }}</span>
+                    <md-layout md-align="center" md-flex="100">
+                        <md-layout md-align="center" md-flex="50">
+                            <md-button class="md-primary">{{ $t("login.wechat_login") }}</md-button>                            
                         </md-layout>
 
-                        <md-layout md-align="center" md-flex="25">
-                            <md-button class="md-primary">微博登录</md-button>
+                        <md-layout md-align="center" md-flex="50">
+                            <md-button class="md-primary">{{ $t("login.weibo_login") }}</md-button>
                         </md-layout>
                         
-                        <md-layout md-align="center" md-flex="25">
-                            <md-button class="md-primary">豆瓣登录</md-button>
+                        <md-layout md-align="center" md-flex="50">
+                            <md-button class="md-primary">{{ $t("login.douban_login") }}</md-button>
                         </md-layout>
 
-                        <md-layout md-align="center" md-flex="25">
-                            <md-button class="md-primary">QQ登录</md-button>
+                        <md-layout md-align="center" md-flex="50">
+                            <md-button class="md-primary">{{ $t("login.QQ_login") }}</md-button>
                         </md-layout>
                         
                     </md-layout>
                     <md-layout md-align="center" md-flex="50">
                         <md-button  id="saveButton" @click.native="login" class="md-raised md-accent">
-                            登录
+                            {{ $t("login.login") }}
                         </md-button>
                     </md-layout>
                     <md-snackbar md-position="bottom center" ref="snackbarFailed" md-duration=4000>
-                        <span>登录失败！请检查邮箱和密码是否正确</span>
+                        <span>{{ $t("login.fail") }}</span>
                     </md-snackbar>
 
                     <md-snackbar md-position="bottom center" ref="snackbarSuccess" md-duration=4000>
-                        <span>登录成功！跳转到首页</span>
+                        <span>{{ $t("login.success") }}</span>
                     </md-snackbar>
                 </md-layout>
                 
