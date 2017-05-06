@@ -15,42 +15,70 @@
 
     AVTools.AVInit();
 
+    var joinedActivitiesID = [];
+
+    // 先获取当前用户所参与的所有Activities
+    let user = AV.User.current();
+    if (user !== null){
+        user.get("joinedActivities").forEach((activityItem)=>{
+            if (activityItem && activityItem.id){
+                joinedActivitiesID.push(activityItem.id);
+            }
+        })
+    }
+
     var image = require('../assets/card-sky.jpg');
 
     var activity = new AV.Query('Activity');
     activity.descending('createdAt');
 
     var activityList = [];
-    activity.find().then((result)=>{
-        console.log("获取result: ", result);
-        if (result.length > 0){
-            result.forEach((activityItem)=>{
-                activityList.push({
-                    id: activityItem.id,
-                    title: activityItem.get("title"),
-                    description: activityItem.get("description"),
-                    todoList: activityItem.get("todoList"),
-                    personNum: activityItem.get("personNum"),
-                    date: activityItem.get("date"),
-                    createUser: activityItem.get("createUser"),
-                    imgUrl: activityItem.get("pictureUrl"),
-                    geolocation: activityItem.get("geolocation"),
-                    likes: activityItem.get("likes")
+    var fetchActivityList = function (){
+        activity.find().then((result)=>{
+            console.log("获取result: ", result);
+            if (result.length > 0){
+                result.forEach((activityItem)=>{
+                    console.log("activityItem", activityItem);
+                    let joinButtonText = "JOIN NOW";
+                    let joinButtonDisable = false;
+                    joinedActivitiesID.forEach((itemID)=>{
+                        if (itemID === activityItem.id){
+                            joinButtonText = "Joined Task";
+                            joinButtonDisable = true;
+                        }
+                    })
+                    activityList.push({
+                        AVObj: activityItem,
+                        id: activityItem.id,
+                        title: activityItem.get("title"),
+                        description: activityItem.get("description"),
+                        todoList: activityItem.get("todoList"),
+                        personNum: activityItem.get("personNum"),
+                        date: activityItem.get("date"),
+                        createUser: activityItem.get("createUser"),
+                        imgUrl: activityItem.get("pictureUrl"),
+                        geolocation: activityItem.get("geolocation"),
+                        likes: activityItem.get("likes"),
 
+                        joinButtonText: joinButtonText,
+                        joinButtonDisable: joinButtonDisable
+
+                    })
                 })
-            })
-            console.log("activityList", activityList);
 
-        }
-    })
+            }
+        })
+    }
+    
 
     export default {
         name: 'CardList',
         // 路由钩子
         beforeRouteUpdate (to, from, next){
-            this.fetchData();
+            fetchActivityList();
         },
         data () {
+            fetchActivityList();
             return {
                 // 这里是应该渲染的卡片列表
                 activityList: activityList,
@@ -64,38 +92,7 @@
                     }
                 ]
             }
-        },
-        methods: {
-            fetchData(){
-                var activity = new AV.Query('Activity');
-                activity.descending('createdAt');
-
-                var activityList = [];
-                activity.find().then((result)=>{
-                    console.log("获取result: ", result);
-                    if (result.length > 0){
-                        result.forEach((activityItem)=>{
-                            activityList.push({
-                                id: activityItem.id,
-                                title: activityItem.get("title"),
-                                description: activityItem.get("description"),
-                                todoList: activityItem.get("todoList"),
-                                personNum: activityItem.get("personNum"),
-                                date: activityItem.get("date"),
-                                createUser: activityItem.get("createUser"),
-                                imgUrl: activityItem.get("pictureUrl"),
-                                geolocation: activityItem.get("geolocation"),
-                                likes: activityItem.get("likes")
-
-                            })
-                        })
-                        console.log("activityList", activityList);
-
-                    }
-                })
-                this.activityList = activityList;
-            }
-        },
+        },  
         components: {
             Card
         }

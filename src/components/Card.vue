@@ -30,15 +30,15 @@
                     </md-card-actions>
                     <md-card-content>
                         <md-card-area>
-                            <h3 class="md-subheading">日期和具体时间</h3>
+                            <h3 class="md-subheading">{{ $t("Card.timeHeading") }}</h3>
                             <div class="card-reservation">
                             <md-icon>access_time</md-icon>
-                                <p class="activity_time">日期：{{item.date}} 时间: {{item.todoList[0].todoDate}}</p>
+                                <p class="activity_time">{{ $t("Card.date") }}：{{item.date}} {{ $t("Card.time") }}: {{item.todoList[0].todoDate}}</p>
                             </div>
                         </md-card-area>
                         <md-card-actions>
-                            <md-button @click.native="goDetail(item.id)" id="detailButton" class="md-raised">查看详情</md-button>
-                            <md-button @click.native="joinNow(item.id)" id="joinButton" class="md-raised md-accent">马上参加</md-button>
+                            <md-button @click.native="goDetail(item.id)" id="detailButton" class="md-raised">{{ $t("Card.detail") }}</md-button>
+                            <md-button @click.native="joinNow(item.id)" id="joinButton" class="md-raised md-accent" :disabled="joinButtonDisable">{{joinButtonText}}</md-button>
                         </md-card-actions>
                     </md-card-content>
                 </md-card-expand>
@@ -52,9 +52,14 @@
     export default {
         name: 'Card',
         props: ['item','index'],
+    
         data () {
+            
             return {
-                likes : this.item.likes
+                likes : this.item.likes,
+                activityItem: this.item,
+                joinButtonText: this.item.joinButtonText,
+                joinButtonDisable: this.item.joinButtonDisable
             }
         },
         methods: {
@@ -80,6 +85,22 @@
             },
             joinNow: function(activityID){
                 console.log('joinNow clicked!', activityID);
+                let user = AV.User.current();
+                console.log(this.item.AVObj);
+                let activity = new AV.Query("Activity");
+                // activity.get(this.activityItem.id).then((msg)=>{
+                //     user.get(joinedActivities).push(msg);
+                // },(error)=>{
+                //     console.log("获取该任务信息出错")
+                // })
+                user.get("joinedActivities").push(this.item.AVObj);
+                user.save().then((msg)=>{
+                    console.log("参与成功！");
+                    this.joinButtonText = "Joined Task";
+                    this.joinButtonDisable = true;
+                }, (error)=>{
+                    console.log("参与活动失败，error: ", error);
+                })
             },
             goDetail: function(activityID){
                 console.log("goDetail clicked", activityID);

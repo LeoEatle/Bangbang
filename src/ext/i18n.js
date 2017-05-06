@@ -1,7 +1,7 @@
 // Ready translated locale messages
 const languagePack = {
   "en": {
-    "register":{
+    "register": {
         "click_avatar":"click the avatar to set your avatar",
         "email": "Email",
         "email_label": "Edit the email here. (The email is the unique ID)",
@@ -23,7 +23,7 @@ const languagePack = {
         "register_success": "Success! Return to the home page."
 
     },
-    "login":{
+    "login": {
         "email_label": "Edit the email here",
         "password_label": "Edit the password here",
         "other_type": "Ohter ways to log in:",
@@ -35,6 +35,23 @@ const languagePack = {
         "login": "Log in",
         "fail": "Fail to login! Please check your email and password",
         "success": "Success to login! Return to home page"
+    },
+    "sideNav": {
+        "logoff": "Logoff",
+        "homePage": "Home Page",
+        "createTask": "Create a new Task",
+        "joinedTasks": "Joined Tasks",
+        "staredTasks": "Stared Tasks",
+        "achievement": "Achievement",
+        "personalInformation": "Personal Information",
+        "setting": "Setting"
+    },
+    "Card": {
+        "timeHeading": "The date and the scheduled time",
+        "date": "Date",
+        "time": "Time",
+        "detail": "Get the Detail"
+
     }
   },
   "zh": {
@@ -72,6 +89,24 @@ const languagePack = {
         "login": "登录",
         "fail": "登录失败！请检查邮箱和密码是否正确",
         "success": "登录成功！跳转到首页"
+    },
+
+    "sideNav":{
+        "logoff": "注销",
+        "homePage": "首页",
+        "createTask": "创建活动",
+        "joinedTasks": "参加的活动",
+        "staredTasks": "活动收藏",
+        "achievement": "我的成就",
+        "personalInformation": "个人信息",
+        "setting": "设置"
+    },
+    "Card": {
+        "timeHeading": "日期和具体时间",
+        "date": "日期",
+        "time": "时间",
+        "detail": "查看详情"
+
     }
   },
   "ja": {

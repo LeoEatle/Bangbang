@@ -8,8 +8,7 @@
             </md-avatar>
 
             <span style="flex: 1"></span>
-            <div class="test" @click="test">测试</div>
-            <div class="logOut" @click="logOut">注销</div>
+            <div class="logOut" @click="logOut">{{ $t("sideNav.logoff") }}</div>
             </md-list-item>
 
             <md-list-item>
@@ -27,33 +26,31 @@
 
         <md-list>
         <md-list-item @click.native="backHome" class="md-primary">
-            <md-icon>home</md-icon><span>首页</span>
+            <md-icon>home</md-icon><span>{{ $t("sideNav.homePage") }}</span>
         </md-list-item>
 
         <md-list-item @click.native="createActivity" class="md-primary">
-            <md-icon>add_circle</md-icon> <span>创建活动</span>
+            <md-icon>add_circle</md-icon> <span>{{ $t("sideNav.createTask") }}</span>
         </md-list-item>
 
         <md-list-item @click.native="$refs.sidenav.toggle()">
-            <md-icon>access_time</md-icon> <span>参加的活动</span>
+            <md-icon>access_time</md-icon> <span>{{ $t("sideNav.joinedTasks") }}</span>
         </md-list-item>
 
         <md-list-item @click.native="$refs.sidenav.toggle()">
-            <md-icon>turned_in</md-icon> <span>活动收藏</span>
+            <md-icon>turned_in</md-icon> <span>{{ $t("sideNav.staredTasks") }}</span>
         </md-list-item>
 
         <md-list-item @click.native="$refs.sidenav.toggle()">
-            <md-icon>archive</md-icon> <span>我的成就</span>
+            <md-icon>archive</md-icon> <span>{{ $t("sideNav.achievement") }}</span>
         </md-list-item>
-
-        
-        <md-list-item @click.native="$refs.sidenav.toggle()">
-            <md-icon>stars</md-icon> <span>我的徽章</span>
-        </md-list-item>
-
 
         <md-list-item @click.native="personalCenter">
-            <md-icon>person</md-icon> <span>个人信息</span>
+            <md-icon>person</md-icon> <span>{{ $t("sideNav.personalInformation") }}</span>
+        </md-list-item>
+
+        <md-list-item @click.native="personalCenter">
+            <md-icon>settings</md-icon> <span>{{ $t("sideNav.personalInformation") }}</span>
         </md-list-item>
 
         </md-list>
@@ -124,8 +121,8 @@
             logOut() {
                 // 注销并回到首页
                 AVTools.AVLogout();
-                this.wechatID = "游客";
-                this.userName = "游客";
+                this.wechatID = "Visitor";
+                this.userName = "Visitor2";
                 this.avatarUrl = 'https://placeimg.com/64/64/people/8';
                 this.toggleSidenav();     
                 this.$router.push({
