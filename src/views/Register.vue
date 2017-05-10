@@ -1,5 +1,5 @@
 <template>
-    <div id="personal-center">
+    <div >
         
 
         <md-tabs md-fixed>
@@ -141,7 +141,7 @@
     
     AVTools.AVInit();
     export default {
-        name: 'personalCenter',
+        name: 'Register',
         data: function() {
             return (
                 {

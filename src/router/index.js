@@ -31,6 +31,8 @@ export default new Router({
       path: '/personal-center/:id',
       name: 'personalCenter',
       component: personalCenter,
+      // 将路由的参数作为props传入组件
+      props: true
     },
     {
       path: '/register',
