@@ -4,7 +4,7 @@
             <md-tab id="find" md-label="Find">
                 <CardList></CardList>
             </md-tab>
-            <md-tab id="map" md-label="Map">
+            <md-tab id="map" md-label="Map" :style="layout_style">
                 <MapView></MapView>
             </md-tab>
         </md-tabs>  
@@ -18,8 +18,12 @@
     import CardList from './CardList.vue';
     import AVTools from '../ext/AVTools';
     import MapView from './MapView.vue';
+
+    let bodyHeight =  document.body.clientHeight-114;
     export default {
         name: 'Home',
+
+        
         methods: {
             toggleLeftSidenav() {
                 this.$refs.leftSidenav.toggle();
@@ -48,6 +52,14 @@
             CardList,
             MapView
 
+        },
+        data(){
+            return({
+                layout_style: {
+                    width: "100%",
+                    height: bodyHeight + 'px'
+                },
+            })
         }
     }
 </script>

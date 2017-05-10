@@ -5,6 +5,7 @@ import createActivity from '@/views/CreateActivity_mu'
 import personalCenter from '@/views/PersonalCenter'
 import Register from '@/views/Register'
 import activityDetail from '@/views/ActivityDetail';
+import joinedActivity from '@/views/JoinedActivity';
 
 Vue.use(Router)
 
@@ -27,7 +28,7 @@ export default new Router({
       component: createActivity
     },
     {
-      path: '/personal-center',
+      path: '/personal-center/:id',
       name: 'personalCenter',
       component: personalCenter,
     },
@@ -35,6 +36,11 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: Register
+    },
+    {
+      path: '/joined_activity',
+      name: 'joinedActivity',
+      component: joinedActivity
     }
   ]
 })

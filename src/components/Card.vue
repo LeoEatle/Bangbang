@@ -88,22 +88,35 @@
                 let user = AV.User.current();
                 console.log(this.item.AVObj);
                 let activity = new AV.Query("Activity");
-                // activity.get(this.activityItem.id).then((msg)=>{
-                //     user.get(joinedActivities).push(msg);
-                // },(error)=>{
-                //     console.log("获取该任务信息出错")
-                // })
-                user.get("joinedActivities").push(this.item.AVObj);
-                user.save().then((msg)=>{
+                activity.get(this.activityItem.id).then((item)=>{
+                    item.get('joinUsers').push(user);
+                    item.save();
+                },(error)=>{
+                    console.log("获取该任务信息出错")
+                }).then((msg)=>{
+                    console.log("activity 存储完成，msg: ", msg);
+                    console.log("接下来存储user方的joinedActivities");
+                    user.get("joinedActivities").push(this.item.AVObj);
+                    user.save();
+                }, (error)=>{
+                    console.log("activity.joinuser存储失败，error: ", error);
+                }).then((msg)=>{
                     console.log("参与成功！");
                     this.joinButtonText = "Joined Task";
                     this.joinButtonDisable = true;
                 }, (error)=>{
                     console.log("参与活动失败，error: ", error);
-                })
+                });
+                // user.get("joinedActivities").push(this.item.AVObj);
+                // user.save().then((msg)=>{
+                //     console.log("参与成功！");
+                //     this.joinButtonText = "Joined Task";
+                //     this.joinButtonDisable = true;
+                // }, (error)=>{
+                //     console.log("参与活动失败，error: ", error);
+                // })
             },
             goDetail: function(activityID){
-                console.log("goDetail clicked", activityID);
                 this.$router.push({
                     path: "activity_detail/"+ activityID
                 })

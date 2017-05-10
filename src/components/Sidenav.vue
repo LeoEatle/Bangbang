@@ -33,7 +33,7 @@
             <md-icon>add_circle</md-icon> <span>{{ $t("sideNav.createTask") }}</span>
         </md-list-item>
 
-        <md-list-item @click.native="$refs.sidenav.toggle()">
+        <md-list-item @click.native="joinedActivity">
             <md-icon>access_time</md-icon> <span>{{ $t("sideNav.joinedTasks") }}</span>
         </md-list-item>
 
@@ -50,7 +50,7 @@
         </md-list-item>
 
         <md-list-item @click.native="personalCenter">
-            <md-icon>settings</md-icon> <span>{{ $t("sideNav.personalInformation") }}</span>
+            <md-icon>settings</md-icon> <span>{{ $t("sideNav.setting") }}</span>
         </md-list-item>
 
         </md-list>
@@ -112,10 +112,20 @@
                     });
                 }
             },
-            personalCenter() {
+            // 参加的活动
+            joinedActivity() {
                 this.$refs.sidenav.toggle();
                 this.$router.push({
-                    path: '/personal-center'
+                    path: '/joined_activity'
+                })
+            },
+            // 个人信息中心
+            personalCenter() {
+                this.$refs.sidenav.toggle();
+                var currentUser = AV.User.current();
+
+                this.$router.push({
+                    path: '/personal-center/'+currentUser.id
                 });
             },
             logOut() {

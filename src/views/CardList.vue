@@ -20,11 +20,16 @@
     // 先获取当前用户所参与的所有Activities
     let user = AV.User.current();
     if (user !== null){
-        user.get("joinedActivities").forEach((activityItem)=>{
-            if (activityItem && activityItem.id){
-                joinedActivitiesID.push(activityItem.id);
-            }
+        user.fetch().then(()=>{
+            user.get("joinedActivities").forEach((activityItem)=>{
+                if (activityItem && activityItem.id){
+                    joinedActivitiesID.push(activityItem.id);
+                }
+            })
+        },(error)=>{
+            console.log('user获取失败, error: ', error);
         })
+        console.log(joinedActivitiesID);
     }
 
     var image = require('../assets/card-sky.jpg');
@@ -38,7 +43,7 @@
             console.log("获取result: ", result);
             if (result.length > 0){
                 result.forEach((activityItem)=>{
-                    console.log("activityItem", activityItem);
+                    //console.log("activityItem", activityItem);
                     let joinButtonText = "JOIN NOW";
                     let joinButtonDisable = false;
                     joinedActivitiesID.forEach((itemID)=>{
@@ -82,15 +87,7 @@
             return {
                 // 这里是应该渲染的卡片列表
                 activityList: activityList,
-                items: [
-                    {
-                        imgUrl: image
-                    },{
-                        imgUrl: image
-                    },{
-                        imgUrl: image
-                    }
-                ]
+                
             }
         },  
         components: {

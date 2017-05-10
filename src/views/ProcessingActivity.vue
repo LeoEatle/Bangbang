@@ -8,21 +8,20 @@
             <mu-flexbox-item class="base_information">
                 <h2 class="title">{{title}}</h2>
                 <img :src="pictureUrl" alt="任务图片">
-                <h3>Introduction</h3>
                 <p class="description">{{description}}</p>
-                <h3>Person number limited</h3>
+                <h3>人数限制</h3>
                 <p class="numberLimit">{{joinUsers.length}}/{{personNum}}</p>
-                <h3>Scheduled date</h3>
+                <h3>预计日期</h3>
                 <p class="activityDate">{{activityDate}}</p>
-                <h3>Contact information</h3>
-                <p><md-icon v-bind:md-src="wechat"></md-icon>  <span>Wechat: {{userWechat}}</span></p>
-                <p><md-icon>phone</md-icon> <span>Mobile phone number：{{userPhoneNumber}}</span> </p>
+                <h3>联系方式</h3>
+                <p><md-icon v-bind:md-src="wechat"></md-icon>  <span>微信: {{userWechat}}</span></p>
+                <p><md-icon>phone</md-icon> <span>手机：{{userPhoneNumber}}</span> </p>
             </mu-flexbox-item>
 
             <mu-flexbox-item>
-                <h3>The participants</h3>
+                <h3>参与人员</h3>
                 <div class="joinUsers" v-if="joinUsers.length !== 0">
-                    <div>Now these people have joined this task：</div>
+                    <div>现在已经有这些人参加了哦：</div>
                     <div class="joinUsers">
                         <span v-for="(item, index) in joinUsers">
 
@@ -30,21 +29,21 @@
                     </div>
                 </div>
                 <div v-else>
-                    <div>There are no any participants yet！</div>
+                    <div>目前还没有人参加，期待您的参与！</div>
                 </div>
             </mu-flexbox-item>
             
 
             <mu-flexbox-item class="todoListBlock" >
-                <h3>Plan List   <small>Click the item to see the detail</small></h3>
+                <h3>计划列表   <small>点击项目可以查看详情</small></h3>
                 <ol class="todoList">
                     <li class="todoItem" v-for="(item, index) in todoList" :key="index" >
-                        <span>{{item.todoName}}</span> <mu-checkbox :nativeValue="index.toString()" v-model="todoStatus" v-on:change="todoStatusChange" :disabled="checkBoxDisable"></mu-checkbox>
+                        <span>{{item.todoName}}</span> <mu-checkbox :nativeValue="index.toString()" v-model="todoStatus" v-on:change="todoStatusChange" :disable="checkBoxDisable"></mu-checkbox>
                     </li>
                 </ol>
-                <h3>Concret time</h3>
+                <h3>具体时间</h3>
                 <p>{{todoTime}}</p>
-                <h3>Address</h3>
+                <h3>地址预览</h3>
                 <div class="amap-page-container">
                     <el-amap :events="events" class="el-vue-amap" :plugin="plugin" :center="mapCenter" :zoom="16">
                         <el-amap-marker :position="mapCenter"></el-amap-marker>
@@ -53,8 +52,8 @@
             </mu-flexbox-item>
 
             <mu-flexbox-item class="button_list">
-                <md-button class="md-raised md-accent joinButton" @click.native="joinClick" :disabled="joinButtonDisable">{{joinButtonText}}</md-button>
-                <md-button class="md-raised starButton" @click.native="starClick">Star</md-button>
+                <md-button class="md-raised md-accent joinButton" @click.native="joinClick">点击参加</md-button>
+                <md-button class="md-raised starButton" @click.native="starClick">加入收藏</md-button>
             </mu-flexbox-item>
             
 
@@ -73,10 +72,7 @@
     let userType = "participants";
     let checkBoxDisable = true;
 
-    let joinButtonText = "JOIN NOW";
-    let joinButtonDisable = false;
-
-    if (user.get("type") == "需求者"){
+    if (user.get("type") === "需求者"){
         userType = "creator";
         checkBoxDisable = false;
     }
@@ -90,7 +86,6 @@
             let query = new AV.Query("Activity");
             let detail;
             query.include("createUser");
-            query.include("joinUsers");
             query.get(activityID).then((activity)=>{
                 console.log("activity", activity);
                 console.log("createUser");
@@ -120,15 +115,6 @@
                 this.personNum = activity.get("personNum");
                 this.mapCenter = [this.todoGeolocation.lng, this.todoGeolocation.lat];
 
-                // 判断此用户是否有参加
-                this.joinUsers.forEach((joinUser)=>{
-                    if(joinUser.objectId === user.objectId){
-                        this.joinButtonText = "Joined Task";
-                        this.joinButtonDisable = true;
-                    }
-                })
-
-
             }, (error)=>{
                 console.log("获取任务信息出错，error: ", error);
             })
@@ -136,14 +122,9 @@
         data() {
                         
             return {
-                
-
                 // 用户的type判断
                 userType: userType,
                 checkBoxDisable: checkBoxDisable,
-
-                joinButtonText: joinButtonText,
-                joinButtonDisable: joinButtonDisable,
 
                 // 高德地图英文化
                 events: {
@@ -223,7 +204,6 @@
     }
     .title{
         position: relative;
-        line-height: 21px;
     }
     .description{
         position: relative;
