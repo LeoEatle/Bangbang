@@ -49,7 +49,7 @@
             <md-icon>person</md-icon> <span>{{ $t("sideNav.personalInformation") }}</span>
         </md-list-item>
 
-        <md-list-item @click.native="personalCenter">
+        <md-list-item @click.native="setting">
             <md-icon>settings</md-icon> <span>{{ $t("sideNav.setting") }}</span>
         </md-list-item>
 
@@ -126,6 +126,13 @@
 
                 this.$router.push({
                     path: '/personal-center/'+currentUser.id
+                });
+            },
+            // 用户设置
+            setting() {
+                this.$refs.sidenav.toggle();
+                this.$router.push({
+                    path: '/setting'
                 });
             },
             logOut() {

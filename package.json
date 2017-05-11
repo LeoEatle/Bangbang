@@ -16,7 +16,6 @@
     "muse-ui": "^2.0.2",
     "vue": "^2.2.2",
     "vue-amap": "^0.2.4",
-    "vue-baidu-map": "^0.2.0",
     "vue-clip": "^1.0.0",
     "vue-image-crop-upload": "^1.3.5",
     "vue-img-inputer": "^1.0.62",

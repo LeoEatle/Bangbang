@@ -4243,16 +4243,12 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
-vue-amap@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/vue-amap/-/vue-amap-0.2.3.tgz#5620e23a998b4cb5810176c02ab7dd29038de400"
+vue-amap@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/vue-amap/-/vue-amap-0.2.4.tgz#8ca7f411c3f1179ae006999bbcf3c2c856c54f82"
   dependencies:
     core-js "^2.4.1"
     uppercamelcase "^1.1.0"
-
-vue-baidu-map@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/vue-baidu-map/-/vue-baidu-map-0.2.0.tgz#61e0e6462d0d2bcd140cce1e82d668022ff6d82e"
 
 vue-clip@^1.0.0:
   version "1.0.0"

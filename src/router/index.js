@@ -6,6 +6,7 @@ import personalCenter from '@/views/PersonalCenter'
 import Register from '@/views/Register'
 import activityDetail from '@/views/ActivityDetail';
 import joinedActivity from '@/views/JoinedActivity';
+import Setting from '@/views/Setting';
 
 Vue.use(Router)
 
@@ -43,6 +44,11 @@ export default new Router({
       path: '/joined_activity',
       name: 'joinedActivity',
       component: joinedActivity
+    },
+    {
+      path: '/setting',
+      name: 'setting',
+      component: Setting
     }
   ]
 })
