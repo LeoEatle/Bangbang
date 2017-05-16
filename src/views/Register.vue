@@ -75,8 +75,8 @@
                                         <span>{{ $t("register.type") }}： {{type}}</span>
                                     </div>
                                     <md-list-expand>
-                                            <md-radio v-model="type" id="my-test1" name="my-test-group1" md-value="Service provider">{{ $t("register.type_provider") }}</md-radio>
-                                            <md-radio v-model="type" id="my-test2" name="my-test-group1" md-value="Service demander">{{ $t("register.type_demander") }}</md-radio>
+                                            <md-radio v-model="type" id="my-test1" name="my-test-group1" md-value="志愿者">{{ $t("register.type_provider") }}</md-radio>
+                                            <md-radio v-model="type" id="my-test2" name="my-test-group1" md-value="需求者">{{ $t("register.type_demander") }}</md-radio>
                                     </md-list-expand>
                                 </md-list-item>
 

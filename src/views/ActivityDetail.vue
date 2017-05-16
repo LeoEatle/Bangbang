@@ -106,6 +106,10 @@
     export default {
         name: "ActivityDetail",
         props: ['id'],
+        // 路由钩子
+        beforeRouteUpdate (to, from, next){
+            //fetchActivityList();
+        },
         // 挂载前获取数据
         beforeMount (){
             let activityID = this.id;
@@ -143,8 +147,12 @@
                 this.mapCenter = [this.todoGeolocation.lng, this.todoGeolocation.lat];
 
                 // 判断此用户是否有参加
+                this.joinButtonText = "JOIN NOW";
+                this.joinButtonDisable = false;
                 this.joinUsers.forEach((joinUser)=>{
-                    if(joinUser.objectId === user.objectId){
+                    console.log("joinUser", joinUser);
+                    console.log("AV.User.current", AV.User.current());
+                    if(joinUser.id == AV.User.current().id){
                         this.joinButtonText = "Participated";
                         this.joinButtonDisable = true;
                     }
@@ -234,21 +242,24 @@
                 let user = AV.User.current();
                 let self = this;
                 console.log(user);
-                this.activity.get('joinUsers').push(user);
-                this.activity.save().then((msg)=>{
+                let activity = new AV.Query("Activity");
+                activity.get(this.activity.id).then((item)=>{
+                    item.get('joinUsers').push(user);
+                    item.save();
+                }, (error)=>{
+                    console.log(error);
+                }).then((msg)=>{
                     console.log("任务添加参与者成功", msg);
-                    let joinActivities = user.get("joinActivities");
-                    console.log(joinActivities);
-                    joinActivities.push(this.activity);
-                    user.set("joinActivities", joinActivities);    
+                    user.get("joinedActivities").push(self.activity);
                     user.save();
+                    // self.showSnackbar();
+                    self.joinButtonText = "Participated";
+                    self.joinButtonDisable = true;
                 }, (error)=>{
                     console.log("任务添加参与者失败", error);
                 }).then((msg)=>{
                     console.log("用户添加参与活动成功", msg);
-                    self.showSnackbar();
-                    self.joinButtonText = "Participated";
-                    self.joinButtonDisable = true;
+                    
                 }, (error)=>{
                     console.log("用户添加参与活动失败", error);
                 })
@@ -256,6 +267,10 @@
             },
             starClick(){
                 console.log("收藏活动按钮click");
+                user.get("staredActivities").push(this.activity);
+                user.save().then(()=>{
+                    console.log("stared success");
+                })
             },
             itemDetail(geolocation, time){
                 console.log(geolocation, time);
