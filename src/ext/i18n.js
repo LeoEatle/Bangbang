@@ -41,6 +41,7 @@ const languagePack = {
         "homePage": "Home Page",
         "createTask": "Create a new Task",
         "joinedTasks": "Joined Tasks",
+        "createdTasks": "Created Tasks",
         "staredTasks": "Stared Tasks",
         "achievement": "Achievement",
         "personalInformation": "Personal Information",
@@ -52,6 +53,15 @@ const languagePack = {
         "time": "Time",
         "detail": "Get the Detail"
 
+    },
+    "Setting": {
+        "title": "User setting",
+        "language": "Language",
+        "Modify": "Modify information",
+        "person": "Nickname",
+        "mail": "mail",
+        "phone": "phone",
+        "save": "save"
     }
   },
   "zh": {
@@ -96,6 +106,7 @@ const languagePack = {
         "homePage": "首页",
         "createTask": "创建活动",
         "joinedTasks": "参加的活动",
+        "createdTasks": "我创建的活动",
         "staredTasks": "活动收藏",
         "achievement": "我的成就",
         "personalInformation": "个人信息",
@@ -107,6 +118,15 @@ const languagePack = {
         "time": "时间",
         "detail": "查看详情"
 
+    },
+    "Setting": {
+        "title": "用户设置",
+        "language": "语言",
+        "Modify": "修改信息",
+        "person": "昵称",
+        "mail": "邮箱",
+        "phone": "手机",
+        "save": "保存"
     }
   },
   "ja": {

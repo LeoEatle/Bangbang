@@ -25,7 +25,7 @@
                     <div>Now these people have joined this task：</div>
                     <div class="joinUsers">
                         <span v-for="(item, index) in joinUsers">
-
+                            {{item.get("nickName")}}
                         </span>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                 <h3>Plan List   <small>Click the item to see the detail</small></h3>
                 <ol class="todoList">
                     <li class="todoItem" v-for="(item, index) in todoList" :key="index" >
-                        <span>{{item.todoName}}</span> <mu-checkbox :nativeValue="index.toString()" v-model="todoStatus" v-on:change="todoStatusChange" :disabled="checkBoxDisable"></mu-checkbox>
+                        <span @click="itemDetail(item.todoGeolocation, item.todoDate)">{{item.todoName}}</span> <mu-checkbox :nativeValue="index.toString()" v-model="todoStatus" v-on:change="todoStatusChange" :disabled="checkBoxDisable"></mu-checkbox>
                     </li>
                 </ol>
                 <h3>Concret time</h3>
@@ -56,7 +56,29 @@
                 <md-button class="md-raised md-accent joinButton" @click.native="joinClick" :disabled="joinButtonDisable">{{joinButtonText}}</md-button>
                 <md-button class="md-raised starButton" @click.native="starClick">Star</md-button>
             </mu-flexbox-item>
+
+            <mu-flexbox-item class="comment_list">
+                <mu-list>
+                    <mu-sub-header>Comments</mu-sub-header>
+                    <mu-list-item v-if="commentList.length === 0">There is no any comments yet.</mu-list-item>
+                    <mu-list-item v-for="(item, index) in commentList" :title="item.title" :key="index">
+                        <mu-avatar :src="item.avatar" slot="leftAvatar"/>
+                        <span slot="describe">
+                            <span style="color: rgba(0,0,0,0.87)">{{item.creator}}</span>
+                            <br/>
+                            {{item.content}}
+                        </span>
+                        <mu-divider inset/>
+                    </mu-list-item>
+                </mu-list>
+                <mu-text-field v-model="commentTitle" label="title" labelFloat fullWidth></mu-text-field>
+                <mu-text-field v-model="commentContent" hintText="Input your comment" fullWidth></mu-text-field>
+                <md-button style="display: block; margin: 0px auto 15px auto;" class="md-raised commentButton" @click.native="comment">Leave comments</md-button>
+
+            </mu-flexbox-item>
             
+            <mu-snackbar v-if="snackbar" :message="snackbarText" action="关闭" @actionClick="hideSnackbar" @close="hideSnackbar"/>
+
 
 
 
@@ -92,7 +114,7 @@
             query.include("createUser");
             query.include("joinUsers");
             query.get(activityID).then((activity)=>{
-                console.log("activity", activity);
+                //console.log("activity", activity);
                 console.log("createUser");
                 console.log(activity.get("createUser"));
                 this.activity = activity;
@@ -123,11 +145,12 @@
                 // 判断此用户是否有参加
                 this.joinUsers.forEach((joinUser)=>{
                     if(joinUser.objectId === user.objectId){
-                        this.joinButtonText = "Joined Task";
+                        this.joinButtonText = "Participated";
                         this.joinButtonDisable = true;
                     }
                 })
 
+                this.commentList = activity.get("commentList");
 
             }, (error)=>{
                 console.log("获取任务信息出错，error: ", error);
@@ -186,7 +209,13 @@
                     }
                 }],
 
+                // 留言相关数据
+                commentList: [],
+                commentTitle: "",
+                commentContent: "",
 
+                snackbar: false,
+                snackbarText: "Comment successfully!"
             }
         },
         methods: {
@@ -203,14 +232,68 @@
             joinClick(){
                 console.log("参加活动按钮click");
                 let user = AV.User.current();
+                let self = this;
                 console.log(user);
-                let joinActivities = user.get("joinActivities");
-                console.log(joinActivities);
-                //joinActivities.push(this.activity);
-                //user.set("joinActivities", joinActivities);
+                this.activity.get('joinUsers').push(user);
+                this.activity.save().then((msg)=>{
+                    console.log("任务添加参与者成功", msg);
+                    let joinActivities = user.get("joinActivities");
+                    console.log(joinActivities);
+                    joinActivities.push(this.activity);
+                    user.set("joinActivities", joinActivities);    
+                    user.save();
+                }, (error)=>{
+                    console.log("任务添加参与者失败", error);
+                }).then((msg)=>{
+                    console.log("用户添加参与活动成功", msg);
+                    self.showSnackbar();
+                    self.joinButtonText = "Participated";
+                    self.joinButtonDisable = true;
+                }, (error)=>{
+                    console.log("用户添加参与活动失败", error);
+                })
+                
             },
             starClick(){
                 console.log("收藏活动按钮click");
+            },
+            itemDetail(geolocation, time){
+                console.log(geolocation, time);
+                this.mapCenter = [geolocation.lng, geolocation.lat];
+                this.todoTime = time;
+            },
+            showSnackbar () {
+                this.snackbar = true
+                if (this.snackTimer) clearTimeout(this.snackTimer)
+                this.snackTimer = setTimeout(() => { 
+                    this.snackbar = false;
+                 }, 2000)
+            },
+            hideSnackbar () {
+                this.snackbar = false
+                if (this.snackTimer) clearTimeout(this.snackTimer)
+            },
+
+            comment(){
+                // 增加新的评论
+                let comment = {
+                    title: this.commentTitle,
+                    content: this.commentContent,
+                    avatar: user.get("avatar").get("url"),
+                    creator: user.get("nickName")
+                }
+                this.commentList.push(comment);
+                this.activity.set("commentList", this.commentList);
+                var that = this;
+                this.activity.save().then(function(msg){
+                    console.log("comment saved! msg: ", msg);
+                    that.commentTitle = "";
+                    that.commentContent = "";
+                    that.showSnackbar();
+                }, function(error){
+                    that.snackbarText = "Error!";
+                    that.showSnackbar();
+                })
             }
         }
     }
@@ -254,6 +337,11 @@
 
     .joinButton{
         margin: 0 auto;
+    }
+
+    .commentButton{
+        display: block;
+        margin: 0 auto 5px auto;
     }
 
     .todoList{

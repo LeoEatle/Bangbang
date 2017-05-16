@@ -41,7 +41,6 @@ const i18n = new VueI18n({
   locale: 'en', // set locale
   messages, // set locale messages
 })
-console.log("i18n", i18n);
 new Vue({
   i18n: i18n,
   router,

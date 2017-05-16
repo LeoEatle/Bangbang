@@ -89,7 +89,7 @@
                                     console.log("获取当前位置的result: ", result);
                                     if (result.info === "SUCCESS"){
                                         self.mapCenter = [result.position.lng, result.position.lat];
-                                        var point = new AV.GeoPoint(self.mapCenter[1], self.mapCenter[0]);
+                                        let point = new AV.GeoPoint(self.mapCenter[1], self.mapCenter[0]);
                                         // Find the task within 5 kilometers
                                         activity.withinKilometers("geolocation", point, 5.0);
                                         activity.find().then((result)=>{

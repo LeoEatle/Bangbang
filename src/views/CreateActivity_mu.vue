@@ -418,11 +418,25 @@
                 
                 var file = new AV.File(this.picName, this.picValue);
                 var that = this;
+                let user = AV.User.current();
+                console.log("user", user);
                 activity.save().then(function(msg){
                     console.log("activity saved! msg: ", msg);
+                    //let user = AV.User.current();
+                    console.log("user.get('createdActivities')", user.get("createdActivities"));
+                    //user.get("createdActivities").push(msg);
+                    //user.save();
                     that.showSnackbar();
                 }, function(error){
                     console.error("activity save failed! code: ", error);
+                    that.$refs.snackbarFailed.open();
+                })
+                user.get("createdActivities").push(activity);
+                user.save().then((msg)=>{
+                    console.log("User's activities stored! msg: ", msg);
+                    //that.showSnackbar();
+                }, (error)=>{
+                    console.error("User's activity save failed!", error);
                     that.$refs.snackbarFailed.open();
                 });
             },
@@ -433,7 +447,7 @@
                     todoName: this.todoName,
                     todoAddress: this.todoAddress,
                     todoDate: this.todoDate,
-                    todoGeolocation: this.todoGeolocation
+                    todoGeolocation: {lat:this.todoGeolocation.lat, lng:this.todoGeolocation.lng}
                 })
             },
             showTodoBlock() {

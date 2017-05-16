@@ -225,7 +225,7 @@ k 			},
                 user.set('type', this.type);
                 user.set('avatar', this.avatar)
 
-                user.set('createActivities', []);
+                user.set('createdActivities', []);
                 user.set('joinActivities', []);
                 user.set('starActivities', []);
 

@@ -38,6 +38,10 @@ export default {
       console.log("提示用户登录！");
       this.$refs.dialog5.open();
     },
+    changeLanguage(value) {
+      console.log(value);
+      console.log(this.$i18n);
+    },
     toggleLeftSidenav() {
         this.$data.state = !this.$data.state;
         this.$refs.leftSidenav.toggleSidenav();
@@ -76,6 +80,15 @@ export default {
       console.log('askSign listened!');
       this.$refs.dialog5.open();
     });
+    this.$on('change-language', function(lang){
+      console.log('Change language!', lang);
+      console.log(this.$i18n);
+      if (lang == "English"){
+        this.$i18n.locale = 'en';
+      }else if (lang == "Chinese"){
+        this.$i18n.locale = 'zh';
+      }
+    })
 
     AVTools.AVInit();
     

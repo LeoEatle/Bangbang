@@ -1,14 +1,14 @@
 <template>
     <div id="personal-center">
                 <mu-flexbox orient="vertical" >
-                    <h2>用户设置</h2>
+                    <h2>{{ $t("Setting.title") }}</h2>
                    
                     <mu-flexbox-item>
-                        <h3>Language</h3>
+                        <h3>{{ $t("Setting.language") }}</h3>
                         <mu-radio label="中文" name="group" nativeValue="Chinese" v-model="language" class="language-radio" @change="languageChange"/> <br/>
                         <mu-radio label="English" name="group" nativeValue="English" v-model="language"  class="language-radio" @change="languageChange"/> <br/>
 
-                        <h3>Modify information</h3>
+                        <h3>{{ $t("Setting.Modify") }}</h3>
                         <div class="information"><md-icon class="md-primary icon">person</md-icon>  <mu-text-field class="inpuField" label="Nick name" v-model="nickName" labelFloat/></div>
                         <div class="information"><md-icon class="md-primary icon">mail</md-icon><mu-text-field class="inpuField" label="Email" v-model="email" labelFloat/></div>
                         <div class="information"><md-icon class="md-primary icon">phone</md-icon><mu-text-field class="inpuField" label="Mobile phone number" v-model="mobilePhoneNumber" labelFloat/></div>
@@ -16,7 +16,7 @@
                     </mu-flexbox-item>
 
                     <md-button id="saveButton" @click.native="saveEmit" class="md-raised md-accent">
-                       Save
+                       {{ $t("Setting.save") }}
                     </md-button>
                 </mu-flexbox>
                 <mu-toast v-if="toast" :message="message" />
@@ -66,7 +66,7 @@
                 this.show = !this.show;
             },
             languageChange(value) {
-                console.log("value", value);
+                this.$parent.$emit("change-language", value);
             },
             saveEmit(){
                 console.log("save Emit!");

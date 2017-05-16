@@ -37,6 +37,10 @@
             <md-icon>access_time</md-icon> <span>{{ $t("sideNav.joinedTasks") }}</span>
         </md-list-item>
 
+        <md-list-item @click.native="createdTasks">
+            <md-icon>truned_in</md-icon> <span>{{ $t("sideNav.createdTasks") }}</span>
+        </md-list-item>
+
         <md-list-item @click.native="$refs.sidenav.toggle()">
             <md-icon>turned_in</md-icon> <span>{{ $t("sideNav.staredTasks") }}</span>
         </md-list-item>
@@ -117,6 +121,13 @@
                 this.$refs.sidenav.toggle();
                 this.$router.push({
                     path: '/joined_activity'
+                })
+            },
+            // 创建的活动
+            createdTasks() {
+                this.$refs.sidenav.toggle();
+                this.$router.push({
+                    path: '/created_tasks'
                 })
             },
             // 个人信息中心

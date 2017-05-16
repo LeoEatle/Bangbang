@@ -39,6 +39,7 @@
 
     var activityList = [];
     var fetchActivityList = function (){
+        
         activity.find().then((result)=>{
             console.log("获取result: ", result);
             if (result.length > 0){
@@ -80,10 +81,13 @@
         name: 'CardList',
         // 路由钩子
         beforeRouteUpdate (to, from, next){
+            //fetchActivityList();
+        },
+        beforeMount () {
             fetchActivityList();
         },
         data () {
-            fetchActivityList();
+            //fetchActivityList();
             return {
                 // 这里是应该渲染的卡片列表
                 activityList: activityList,
