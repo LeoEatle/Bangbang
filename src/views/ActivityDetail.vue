@@ -98,7 +98,7 @@
     let joinButtonText = "JOIN NOW";
     let joinButtonDisable = false;
 
-    if (user.get("type") == "需求者"){
+    if (user && user.get("type") == "需求者"){
         userType = "creator";
         checkBoxDisable = false;
     }
@@ -253,13 +253,13 @@
                     user.get("joinedActivities").push(self.activity);
                     user.save();
                     // self.showSnackbar();
-                    self.joinButtonText = "Participated";
-                    self.joinButtonDisable = true;
+                    
                 }, (error)=>{
                     console.log("任务添加参与者失败", error);
                 }).then((msg)=>{
                     console.log("用户添加参与活动成功", msg);
-                    
+                    self.joinButtonText = "Participated";
+                    self.joinButtonDisable = true;
                 }, (error)=>{
                     console.log("用户添加参与活动失败", error);
                 })

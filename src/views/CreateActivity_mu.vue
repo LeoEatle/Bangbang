@@ -420,24 +420,35 @@
                 var that = this;
                 let user = AV.User.current();
                 console.log("user", user);
-                activity.save().then(function(msg){
+                
+                // activity.save({fetchWhenSave: true}).then((msg)=>{
+                //     console.log("activity saved! msg: ", msg);
+                //     //let user = AV.User.current();
+                //     console.log("user.get('createdActivities')", user.get("createdActivities"));
+                //     // user.get("createdActivities").push(msg);
+                //     // user.save();
+                //     //that.showSnackbar();
+                // }, (error)=>{
+                //     console.error("activity save failed! code: ", error);
+                //     that.$refs.snackbarFailed.open();
+                // });
+
+                activity.save({fetchWhenSave: true}).then((msg)=>{
                     console.log("activity saved! msg: ", msg);
-                    //let user = AV.User.current();
-                    console.log("user.get('createdActivities')", user.get("createdActivities"));
-                    //user.get("createdActivities").push(msg);
-                    //user.save();
-                    that.showSnackbar();
-                }, function(error){
+                    let activityQuery = new AV.Query("Activity");
+                    activityQuery.get(msg.id);
+                }, (error)=>{
                     console.error("activity save failed! code: ", error);
                     that.$refs.snackbarFailed.open();
-                })
-                user.get("createdActivities").push(activity);
-                user.save().then((msg)=>{
-                    console.log("User's activities stored! msg: ", msg);
-                    //that.showSnackbar();
-                }, (error)=>{
-                    console.error("User's activity save failed!", error);
-                    that.$refs.snackbarFailed.open();
+                }).then((item)=>{
+                    user.get("createdActivities").push(item);
+                    user.save();
+                }).then(()=>{
+                    console.log("success");
+                    that.showSnackbar();// 没想到我竟然在答辩前一天晚上发现这个bug，并解决这个神奇的bug
+                    // 如果这里不先通过id去get这个activity，这里的user发送leancloud请求不是PUT而是POST了一个batch，就会出错！
+                    // 没有办法！我不明白为什么，但只能这么做，可能是如果不先get，leancloud没办法判断这个Pointer的属性，无法加入到数组中
+                    
                 });
             },
 
