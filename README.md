@@ -1,6 +1,14 @@
-# bangbang
+# What is Bangbang?
 
-> Bangbang is a universal system for publishing tasks
+Bangbang is a web-based application for providing geo-location based service for the people in neighborhood.
+
+It is also my graduation design project for my bachelor's degree in Jinan University.
+
+# How to use it?
+
+## Create your profile
+![image]
+
 
 ## Build Setup
 
