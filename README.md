@@ -10,7 +10,7 @@ It is also my graduation design project for my bachelor's degree in Jinan Univer
 <img src="https://github.com/LeoEatle/Bangbang/blob/master/gif/register.gif" width="206">
 
 ## Create a new task!
-<img src="https://github.com/LeoEatle/Bangbang/blob/master/gif/createTask1.gif" width="206">
+<img src="https://github.com/LeoEatle/Bangbang/blob/master/gif/createtask1.gif" width="206">
 
 ## Use map to find fun!
 <img src="https://github.com/LeoEatle/Bangbang/blob/master/gif/map2.gif" width="206">
