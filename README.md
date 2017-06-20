@@ -7,16 +7,16 @@ It is also my graduation design project for my bachelor's degree in Jinan Univer
 # How to use it?
 
 ## Create your profile!
-![image](https://github.com/LeoEatle/Bangbang/blob/master/gif/register.gif)
+<img src="https://github.com/LeoEatle/Bangbang/blob/master/gif/register.gif" width="206">
 
 ## Create a new task!
-![image](https://github.com/LeoEatle/Bangbang/blob/master/gif/createtask1.gif)
+<img src="https://github.com/LeoEatle/Bangbang/blob/master/gif/createTask1.gif" width="206">
 
 ## Use map to find fun!
-![image](https://github.com/LeoEatle/Bangbang/blob/master/gif/map2.gif)
+<img src="https://github.com/LeoEatle/Bangbang/blob/master/gif/map2.gif" width="206">
 
 ## Change language to en/zh!
-![image](https://github.com/LeoEatle/Bangbang/blob/master/gif/international.gif)
+<img src="https://github.com/LeoEatle/Bangbang/blob/master/gif/international.gif" width="206">
 
 # Tech detail
 Proudly powered by [Vue.js](https://vuejs.org)(Framework) + [Webpack](https://webpack.js.org/)(Building tool) + [LeanCloud](https://leancloud.cn/)(Baas)
